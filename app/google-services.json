@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "263206873764",
-    "project_id": "webringadmin-9947e",
-    "storage_bucket": "webringadmin-9947e.appspot.com"
+    "project_number": "49969864695",
+    "project_id": "jsbroilersadmin",
+    "storage_bucket": "jsbroilersadmin.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:263206873764:android:a61659b4ca5303c7e6d431",
+        "mobilesdk_app_id": "1:49969864695:android:33f71dae8f9583658758f2",
         "android_client_info": {
-          "package_name": "pro.network.webringadmin"
+          "package_name": "pro.network.jsbroilersadmin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "263206873764-g6c814meuc6phlb0dbhe1hvfukfh3npo.apps.googleusercontent.com",
+          "client_id": "49969864695-6ehpqm4irf9aj5kr1oeq2r8t319olecm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAi3XpN2j2sCLNGKinlDlRDhlmn3a-GtQY"
+          "current_key": "AIzaSyB10nH5tiOfhhqOkz2yPVS7KulQrp2Qkec"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "263206873764-g6c814meuc6phlb0dbhe1hvfukfh3npo.apps.googleusercontent.com",
+              "client_id": "49969864695-6ehpqm4irf9aj5kr1oeq2r8t319olecm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
