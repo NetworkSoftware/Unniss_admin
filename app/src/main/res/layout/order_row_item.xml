@@ -49,7 +49,7 @@
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
-                    android:text="Quantity"
+                    android:text="அளவு"
                     android:textColor="@android:color/black" />
 
                 <TextView
@@ -59,7 +59,7 @@
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
-                    android:text="Amount"
+                    android:text="தொகை"
                     android:textColor="@android:color/black" />
 
                 <TextView
@@ -69,7 +69,8 @@
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
-                    android:text="Status"
+                    android:textSize="13dp"
+                    android:text="ஆர்டர் நிலை"
                     android:textColor="@android:color/black" />
 
                 <TextView
@@ -79,7 +80,7 @@
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
-                    android:text="Description"
+                    android:text="விளக்கம்"
                     android:textColor="@android:color/black" />
 
                 <TextView
@@ -89,7 +90,18 @@
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
-                    android:text="Name"
+                    android:text="பெயர்"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginRight="10dp"
+                    android:textSize="12dp"
+                    android:fontFamily="@font/sans_bold"
+                    android:gravity="left"
+                    android:text="தொலைபேசி"
                     android:textColor="@android:color/black" />
 
                 <TextView
@@ -99,7 +111,7 @@
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
-                    android:text="Phone"
+                    android:text="முகவரி"
                     android:textColor="@android:color/black" />
 
                 <TextView
@@ -109,17 +121,7 @@
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
-                    android:text="Address"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginRight="10dp"
-                    android:fontFamily="@font/sans_bold"
-                    android:gravity="left"
-                    android:text="Ordered On"
+                    android:text="தேதி/நேரம்"
                     android:textColor="@android:color/black" />
 
             </LinearLayout>

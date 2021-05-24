@@ -265,7 +265,9 @@ public class Appconfig {
         return new String[]{};
     }
 
-
+    public static String[] QTY_TYPE = new String[]{
+            "Kg", "Nos"
+    };
     public static Map<String, String[]> stringMap = new HashMap<String, String[]>() {{
         put("Fashion",new String[]{});
         put("Mobiles and Tablets",new String[]{});

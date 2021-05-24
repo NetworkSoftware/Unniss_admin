@@ -17,9 +17,11 @@ public class Product implements Serializable {
     String image;
     String description;
     String category;
+    String rqty;
     String qty;
     String stock_update;
     String userId;
+    String rqtyType;
 
     public Product() {
     }
@@ -32,10 +34,12 @@ public class Product implements Serializable {
         this.userId = userId;
     }
 
-    public Product(String brand, String model, String price, String ram, String rom, String name, String image, String description, String category) {
+    public Product(String brand, String model, String price,String rqty,String rqtyType, String ram, String rom, String name, String image, String description, String category) {
         this.brand = brand;
         this.model = model;
         this.price = price;
+        this.rqty = rqty;
+        this.rqtyType = rqtyType;
         this.ram = ram;
         this.rom = rom;
         this.name = name;
@@ -58,6 +62,22 @@ public class Product implements Serializable {
 
     public void setBrand(String brand) {
         this.brand = brand;
+    }
+
+    public String getRqty() {
+        return rqty;
+    }
+
+    public void setRqty(String rqty) {
+        this.rqty = rqty;
+    }
+
+    public String getRqtyType() {
+        return rqtyType;
+    }
+
+    public void setRqtyType(String rqtyType) {
+        this.rqtyType = rqtyType;
     }
 
     public String getModel() {

@@ -63,6 +63,7 @@ import pro.network.jsbroilersadmin.app.Imageutils;
 import static pro.network.jsbroilersadmin.app.Appconfig.CATEGORY;
 import static pro.network.jsbroilersadmin.app.Appconfig.PRODUCT_DELETE;
 import static pro.network.jsbroilersadmin.app.Appconfig.PRODUCT_UPDATE;
+import static pro.network.jsbroilersadmin.app.Appconfig.QTY_TYPE;
 
 /**
  * Created by user_1 on 11-07-2018.
@@ -76,7 +77,8 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
     EditText price;
     EditText ram;
     EditText rom, description;
-
+    EditText rqty;
+    private MaterialBetterSpinner rqtyType;
     private ProgressDialog pDialog;
     private RecyclerView imagelist;
     private ArrayList<String> samplesList = new ArrayList<>();
@@ -96,6 +98,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
     ImageView image_placeholder, image_wallpaper;
     CardView itemsAdd;
     private String imageUrl = "";
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -161,6 +164,11 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         brand.setAdapter(brandAdapter);
         brand.setThreshold(1);
 
+        rqtyType = findViewById(R.id.rqtyType);
+        ArrayAdapter<String> rqtyTypeAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, QTY_TYPE);
+        rqtyType.setAdapter(rqtyTypeAdapter);
+        rqty = findViewById(R.id.rqty);
         submit = (TextView) findViewById(R.id.submit);
         submit.setText("UPDATE");
         submit.setOnClickListener(new View.OnClickListener() {
@@ -173,7 +181,9 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                     brand.setError("Enter the Brand");
                 } else if (model.getText().toString().length() <= 0) {
                     model.setError("Enter the Model");
-                } else if (price.getText().toString().length() <= 0) {
+                }  else if (rqty.getText().toString().length() <= 0) {
+                    rqty.setError("Enter the Quantity");
+                }else if (price.getText().toString().length() <= 0) {
                     price.setError("Enter the Price");
                 } else if (stock_update.getText().toString().length() <= 0) {
                     stock_update.setError("Select the Sold or Not");
@@ -197,9 +207,11 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
             price.setText(contact.price);
             ram.setText(contact.ram);
             rom.setText(contact.rom);
+            rqty.setText(contact.rqty);
             description.setText(contact.description);
             studentId = contact.id;
             stock_update.setText(contact.stock_update);
+            rqtyType.setText(contact.rqtyType);
             imageUrl = contact.image;
             if (imageUrl == null) {
                 imageUrl = "";
@@ -256,6 +268,8 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                 localHashMap.put("model", model.getText().toString());
                 localHashMap.put("price", price.getText().toString());
                 localHashMap.put("ram", ram.getText().toString());
+                localHashMap.put("rqty", rqty.getText().toString());
+                localHashMap.put("rqtyType", rqtyType.getText().toString());
                 localHashMap.put("rom", rom.getText().toString());
                 localHashMap.put("stock_update", stock_update.getText().toString());
                 localHashMap.put("id", studentId);

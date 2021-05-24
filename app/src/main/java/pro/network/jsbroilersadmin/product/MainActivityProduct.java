@@ -115,6 +115,10 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
                             product.setStock_update(jsonObject.getString("stock_update"));
                             product.setDescription(jsonObject.getString("description"));
                             product.setPrice(jsonObject.getString("price"));
+                            product.setRqtyType(jsonObject.getString("rqtyType"));
+                            if(!jsonObject.isNull("rqty")){
+                                product.setRqty(jsonObject.getString("rqty"));
+                            }
                             product.setRam(jsonObject.getString("ram"));
                             product.setRom(jsonObject.getString("rom"));
                             product.setModel(jsonObject.getString("model"));

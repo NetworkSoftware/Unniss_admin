@@ -32,13 +32,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     private ContactsAdapterListener listener;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name,price,stock_update,description;
+        public TextView name,price,rqty,stock_update,description;
         public ImageView thumbnail;
 
         public MyViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.name);
 
+            rqty = view.findViewById(R.id.rqty);
             price = view.findViewById(R.id.price);
             stock_update = view.findViewById(R.id.stock_update_row);
             thumbnail = view.findViewById(R.id.thumbnail);
@@ -75,6 +76,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         holder.name.setText(product.getBrand()+" "+product.getModel());
         holder.price.setText("₹ "+product.getPrice());
         holder.stock_update.setText(product.getStock_update());
+        holder.rqty.setText(product.getRqty());
 
        /* ArrayList<String> images = new Gson().fromJson(product.image, (Type) List.class);
 

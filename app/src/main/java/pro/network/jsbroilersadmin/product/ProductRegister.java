@@ -60,6 +60,7 @@ import pro.network.jsbroilersadmin.app.Imageutils;
 import static pro.network.jsbroilersadmin.app.Appconfig.CATEGORIES_GET_ALL;
 import static pro.network.jsbroilersadmin.app.Appconfig.CATEGORY;
 import static pro.network.jsbroilersadmin.app.Appconfig.PRODUCT_CREATE;
+import static pro.network.jsbroilersadmin.app.Appconfig.QTY_TYPE;
 
 /**
  * Created by user_1 on 11-07-2018.
@@ -91,7 +92,8 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
     private String imageUrl = "";
     ImageView image_placeholder, image_wallpaper;
     CardView itemsAdd;
-
+    EditText rqty;
+    private MaterialBetterSpinner rqtyType;
     TextView submit;
 
     @Override
@@ -163,6 +165,11 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
         ram = (EditText) findViewById(R.id.ram);
         rom = (EditText) findViewById(R.id.rom);
         description = findViewById(R.id.description);
+        rqty = findViewById(R.id.rqty);
+        rqtyType = findViewById(R.id.rqtyType);
+        ArrayAdapter<String> rqtyTypeAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, QTY_TYPE);
+        rqtyType.setAdapter(rqtyTypeAdapter);
 
 
 
@@ -181,6 +188,8 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
                     model.setError("Enter the Model");
                 } else if (price.getText().toString().length() <= 0) {
                     price.setError("Enter the Price");
+                } else if (rqty.getText().toString().length() <= 0) {
+                    rqty.setError("Enter the Quantity");
                 } else if (stock_update.getText().toString().length() <= 0) {
                     stock_update.setError("Select the Sold or Not");
                 } else if (samplesList.size() <= 0) {
@@ -237,8 +246,10 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
                 localHashMap.put("brand", brand.getText().toString());
                 localHashMap.put("model", model.getText().toString());
                 localHashMap.put("price", price.getText().toString());
+                localHashMap.put("rqty", rqty.getText().toString());
                 localHashMap.put("ram", ram.getText().toString());
                 localHashMap.put("rom", rom.getText().toString());
+                localHashMap.put("rqtyType", rqtyType.getText().toString());
                 localHashMap.put("image", new Gson().toJson(samplesList));
                 localHashMap.put("description", description.getText().toString());
                 localHashMap.put("stock_update", stock_update.getText().toString());
