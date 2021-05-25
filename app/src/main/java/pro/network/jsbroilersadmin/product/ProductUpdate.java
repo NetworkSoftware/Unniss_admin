@@ -42,6 +42,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,6 +61,7 @@ import pro.network.jsbroilersadmin.app.AppController;
 import pro.network.jsbroilersadmin.app.Appconfig;
 import pro.network.jsbroilersadmin.app.Imageutils;
 
+import static pro.network.jsbroilersadmin.app.Appconfig.CATEGORIES_GET_ALL;
 import static pro.network.jsbroilersadmin.app.Appconfig.CATEGORY;
 import static pro.network.jsbroilersadmin.app.Appconfig.PRODUCT_DELETE;
 import static pro.network.jsbroilersadmin.app.Appconfig.PRODUCT_UPDATE;
@@ -132,18 +134,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         rom = (EditText) findViewById(R.id.rom);
         description = findViewById(R.id.description);
 
-        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, CATEGORY);
-        category.setAdapter(categoryAdapter);
-        category.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(ProductUpdate.this,
-                        android.R.layout.simple_dropdown_item_1line, Appconfig.stringMap.get(CATEGORY[position]));
-                brand.setAdapter(brandAdapter);
-                brand.setThreshold(1);
-            }
-        });
+
 
 
         stock_update = (MaterialBetterSpinner) findViewById(R.id.stock_update);
@@ -157,12 +148,18 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
             }
         });
         brand = findViewById(R.id.brand);
-
-
-        ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, Appconfig.getSubCatFromCat(CATEGORY[0]));
-        brand.setAdapter(brandAdapter);
-        brand.setThreshold(1);
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, CATEGORY);
+        category.setAdapter(categoryAdapter);
+        category.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(ProductUpdate.this,
+                        android.R.layout.simple_dropdown_item_1line, Appconfig.getSubCatFromCat(CATEGORY[position]));
+                brand.setAdapter(brandAdapter);
+                brand.setThreshold(1);
+            }
+        });
 
         rqtyType = findViewById(R.id.rqtyType);
         ArrayAdapter<String> rqtyTypeAdapter = new ArrayAdapter<String>(this,
@@ -193,7 +190,6 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
 
                     registerUser();
                 }
-
             }
         });
 
@@ -224,7 +220,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
             Log.e("xxxxxxxxxxx", e.toString());
 
         }
-
+        getAllCategories();
     }
 
     private void registerUser() {
@@ -281,7 +277,43 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         strReq.setRetryPolicy(Appconfig.getPolicy());
         AppController.getInstance().addToRequestQueue(strReq);
     }
+    private void getAllCategories() {
+        String tag_string_req = "req_register";
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                CATEGORIES_GET_ALL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int success = jObj.getInt("success");
 
+                    if (success == 1) {
+                        JSONArray jsonArray = jObj.getJSONArray("data");
+                        CATEGORY = new String[jsonArray.length()];
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            CATEGORY[i] = jsonArray.getJSONObject(i).getString("title");
+                        }
+                        ArrayAdapter<String> titleAdapter = new ArrayAdapter<String>(ProductUpdate.this,
+                                android.R.layout.simple_dropdown_item_1line, CATEGORY);
+                        category.setAdapter(titleAdapter);
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                HashMap localHashMap = new HashMap();
+                return localHashMap;
+            }
+        };
+        strReq.setRetryPolicy(Appconfig.getPolicy());
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
     private void deleteUser() {
         String tag_string_req = "req_register";
         pDialog.setMessage("Processing ...");
