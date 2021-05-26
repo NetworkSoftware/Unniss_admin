@@ -10,15 +10,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,6 +18,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -57,16 +56,16 @@ import static pro.network.jsbroilersadmin.app.Appconfig.ORDER_GET_ALL;
 
 public class MainActivityOrder extends AppCompatActivity implements OrderAdapter.ContactsAdapterListener, StatusListener {
     private static final String TAG = MainActivityOrder.class.getSimpleName();
+    ProgressDialog progressDialog;
+    Button loadMore;
+    int offset = 0;
     private RecyclerView recyclerView;
     private List<Order> orderList;
     private OrderAdapter mAdapter;
     private SearchView searchView;
-    ProgressDialog progressDialog;
     private OrderAdapter deliverAdapter;
     private ArrayList<Order> deliveredList;
     private RecyclerView recycler_view_delivered;
-    Button loadMore;
-    int offset = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +120,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                 ORDER_GET_ALL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("Register Response: ", response.toString());
+                Log.d("Register Response: ", response);
 
                 try {
                     JSONObject jObj = new JSONObject(response);
@@ -161,13 +160,13 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                                 } else {
                                     deliveredList.add(order);
                                 }
-                            }catch (Exception e){
+                            } catch (Exception e) {
 
                             }
                         }
                         mAdapter.notifyData(orderList);
                         deliverAdapter.notifyData(deliveredList);
-                        getSupportActionBar().setSubtitle("Orders - "+orderList.size());
+                        getSupportActionBar().setSubtitle("Orders - " + orderList.size());
 
                     } else {
                         Toast.makeText(getApplication(), jObj.getString("message"), Toast.LENGTH_SHORT).show();
@@ -192,6 +191,9 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
                 localHashMap.put("offset", offset * 10 + "");
+                if(getIntent().getStringExtra("status")!=null) {
+                    localHashMap.put("status", getIntent().getStringExtra("status"));
+                }
                 return localHashMap;
             }
         };
@@ -358,7 +360,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                 ORDER_CHANGE_STATUS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("Register Response: ", response.toString());
+                Log.d("Register Response: ", response);
                 try {
                     JSONObject jObj = new JSONObject(response);
                     int success = jObj.getInt("success");

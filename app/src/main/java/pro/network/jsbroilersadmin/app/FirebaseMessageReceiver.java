@@ -20,6 +20,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import pro.network.jsbroilersadmin.NaviActivity;
 import pro.network.jsbroilersadmin.R;
+import pro.network.jsbroilersadmin.order.MainActivityOrder;
 
 
 public class FirebaseMessageReceiver extends FirebaseMessagingService {
@@ -49,7 +50,12 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     }
 
     public void showNotification(String title, String message) {
-        Intent intent = new Intent(this, NaviActivity.class);
+        Intent intent = new Intent(this, MainActivityOrder.class);
+        if(message.toLowerCase().contains("ordered")) {
+            intent.putExtra("status", "ordered");
+        }else if(message.toLowerCase().contains("returned")) {
+            intent.putExtra("status", "Returned");
+        }
         String channel_id = "web_app_channel";
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);

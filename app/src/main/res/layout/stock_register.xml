@@ -73,7 +73,7 @@
                         android:layout_margin="5dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:hint="Select Category"
+                        android:hint="வகையை தேர்ந்தெடுக்க"
                         android:textColor="@color/black"
                         android:textColorHint="#c6c6c6"
                         android:textSize="15dp"
@@ -92,7 +92,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:backgroundTint="@color/gray"
-                            android:hint="Select SubCategory"
+                            android:hint="உள்வகை"
                             android:inputType="text"
                             android:textColorHint="#c6c6c6"
                             android:textSize="@dimen/textsize" />
@@ -115,7 +115,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:backgroundTint="@color/gray"
-                            android:hint="Name"
+                            android:hint="பெயர்"
                             android:inputType="text"
                             android:textColorHint="#c6c6c6"
                             android:textSize="@dimen/textsize" />
@@ -139,7 +139,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:backgroundTint="@color/gray"
-                                android:hint="Quantity"
+                                android:hint="அளவு"
                                 android:inputType="numberDecimal"
                                 android:textColorHint="#c6c6c6"
                                 android:textSize="@dimen/textsize" />
@@ -217,7 +217,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:backgroundTint="@color/gray"
-                            android:hint="Price"
+                            android:hint="விலை"
                             android:inputType="number"
                             android:textColorHint="#c6c6c6"
                             android:textSize="@dimen/textsize" />
@@ -237,7 +237,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:backgroundTint="@color/gray"
-                            android:hint="Description"
+                            android:hint="பொருள் விளக்கம்"
                             android:inputType="textMultiLine"
                             android:textColorHint="#c6c6c6"
                             android:textSize="@dimen/textsize" />

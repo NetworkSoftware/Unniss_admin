@@ -47,16 +47,41 @@ public class NaviActivity extends AppCompatActivity {
 
             }
         });
-
         CardView order = (CardView) findViewById(R.id.orders);
         order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent io = new Intent(NaviActivity.this, MainActivityOrder.class);
-                startActivity(io);
-
+                navOrderPage("ordered");
+            }
+        });
+        CardView returned = (CardView) findViewById(R.id.returned);
+        returned.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navOrderPage("Returned");
             }
         });
 
+        CardView canceled = (CardView) findViewById(R.id.canceled);
+        canceled.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navOrderPage("canceled");
+            }
+        });
+        CardView delivered = (CardView) findViewById(R.id.delivered);
+        delivered.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navOrderPage("Delivered");
+            }
+        });
+
+    }
+
+    private void navOrderPage(String status){
+        Intent io = new Intent(NaviActivity.this, MainActivityOrder.class);
+        io.putExtra("status",status);
+        startActivity(io);
     }
 }
