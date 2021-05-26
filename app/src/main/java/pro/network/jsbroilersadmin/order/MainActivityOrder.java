@@ -293,11 +293,6 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
     @Override
     public void onWhatsAppClick(String phone) {
         try {
-            Uri uri = Uri.parse("smsto:91" + phone);
-            Intent i = new Intent(Intent.ACTION_SENDTO, uri);
-            //  i.putExtra("sms_body", "Hello");
-            i.setPackage("com.whatsapp.w4b");
-            startActivity(i);
 
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("http://api.whatsapp.com/send?phone=91" + phone
