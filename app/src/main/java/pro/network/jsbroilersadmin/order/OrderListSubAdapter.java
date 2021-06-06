@@ -65,7 +65,7 @@ public class OrderListSubAdapter extends RecyclerView.Adapter<OrderListSubAdapte
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final Product myorderBean = myorderBeans.get(position);
-        holder.qty.setText(myorderBean.getQty() +" "+ myorderBean.getModel());
+        holder.qty.setText(myorderBean.getQty() +" "+ myorderBean.getBrand()+" "+myorderBean.getModel());
 //        ArrayList<String> images = new Gson().fromJson(myorderBean.getImage(), (Type) List.class);
 
         GlideApp.with(mainActivityUser)

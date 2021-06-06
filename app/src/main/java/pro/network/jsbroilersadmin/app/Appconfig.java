@@ -53,6 +53,9 @@ public class Appconfig {
     public static final String CATEGORIES_GET_ALL = ip + "/get_all_category.php";
 
 
+    public static final String NEWS_CREATE = ip + "/create_news.php";
+    public static final String GET_NEWS = ip + "/get_news.php";
+
     //Banner
     public static final String BANNERS_CREATE = ip + "/create_banner.php";
     public static final String BANNERS_UPDATE = ip + "/update_stock.php";

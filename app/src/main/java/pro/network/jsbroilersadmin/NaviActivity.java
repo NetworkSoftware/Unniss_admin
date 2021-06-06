@@ -9,6 +9,7 @@ import android.view.View;
 
 import pro.network.jsbroilersadmin.banner.MainActivityBanner;
 import pro.network.jsbroilersadmin.categories.MainActivityCategories;
+import pro.network.jsbroilersadmin.news.NewsRegister;
 import pro.network.jsbroilersadmin.order.MainActivityOrder;
 import pro.network.jsbroilersadmin.product.MainActivityProduct;
 
@@ -29,6 +30,14 @@ public class NaviActivity extends AppCompatActivity {
             }
         });
 
+        CardView news = (CardView) findViewById(R.id.news);
+        news.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent io = new Intent(NaviActivity.this, NewsRegister.class);
+                startActivity(io);
+            }
+        });
         CardView stock = (CardView) findViewById(R.id.stock);
         stock.setOnClickListener(new View.OnClickListener() {
             @Override
