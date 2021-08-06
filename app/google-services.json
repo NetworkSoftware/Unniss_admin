@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "49969864695",
-    "project_id": "jsbroilersadmin",
-    "storage_bucket": "jsbroilersadmin.appspot.com"
+    "project_number": "1046234707734",
+    "project_id": "fresh-catch-admin",
+    "storage_bucket": "fresh-catch-admin.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:49969864695:android:33f71dae8f9583658758f2",
+        "mobilesdk_app_id": "1:1046234707734:android:c70b2a63ef5fc2f1140237",
         "android_client_info": {
-          "package_name": "pro.network.jsbroilersadmin"
+          "package_name": "pro.network.freshcatchadmin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "49969864695-6ehpqm4irf9aj5kr1oeq2r8t319olecm.apps.googleusercontent.com",
+          "client_id": "1046234707734-m4rkb5r8vailg227djk968ther51god8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB10nH5tiOfhhqOkz2yPVS7KulQrp2Qkec"
+          "current_key": "AIzaSyCD2qtwV-UsE4aW2Hz8Y-Tgux3odLcUq3I"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "49969864695-6ehpqm4irf9aj5kr1oeq2r8t319olecm.apps.googleusercontent.com",
+              "client_id": "1046234707734-m4rkb5r8vailg227djk968ther51god8.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

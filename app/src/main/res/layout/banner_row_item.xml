@@ -31,8 +31,7 @@
                 android:layout_marginRight="3dp"
                 android:layout_gravity="center"
                 android:scaleType="fitCenter"
-                android:layout_weight="1"
-                android:src="@drawable/vivo" />
+                android:layout_weight="1" />
 
             <ImageView
                 android:id="@+id/cancel"

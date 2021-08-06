@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimarylight">#4D0000A0</color>
-    <color name="colorPrimary">#212155 </color>
-    <color name="colorPrimaryDark">#FF1B1B45</color>
-    <color name="colorAccent">#212155 </color>
+    <color name="colorPrimary">#f90302</color>
+    <color name="colorPrimaryDark">#f90302</color>
+    <color name="colorAccent">#f90302 </color>
     <color name="primaryTextColor">#212121</color>
     <color name="textColor">#727272</color>
     <color name="gray">#c6c6c6</color>
@@ -21,6 +21,6 @@
     <color name="black">#000000</color>
     <color name="white">#fff</color>
     <color name="windowBackground">#FFFFFF</color>
-    <color name="fullPrimary">#322d89</color>
+    <color name="fullPrimary">#f90302</color>
 
 </resources>
