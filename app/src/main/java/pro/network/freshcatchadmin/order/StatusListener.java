@@ -7,5 +7,7 @@ public interface StatusListener {
     void onWhatsAppClick(String phone);
     void onCallClick(String phone);
     void onCancelClick(String id);
+    void onInvoice(Order id);
+    void onProduct(Order id);
 
 }

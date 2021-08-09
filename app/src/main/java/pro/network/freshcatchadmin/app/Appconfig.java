@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class Appconfig {
     //Key values
     public static final String shopIdKey = "shopIdKey";
     public static final String mypreference = "mypref";
-
+    public static DecimalFormat decimalFormat = new DecimalFormat("0");
     public static final String ip = "http://thestockbazaar.com/admin/e-commerce/freshcatch";
 
 
@@ -40,6 +41,7 @@ public class Appconfig {
     public static String BANNER_CREATE = ip + "/fileFeed.php";
     public static String BANNER_GET_ALL = ip + "/get_all_feed.php";
     public static String BANNER_DELETE = ip + "/fileDelete.php";
+    public static final String GET_ALL_ADDRESS = ip + "/get_all_address.php";
 
     //Stack
     public static final String PRODUCT_CREATE = ip + "/create_stock.php";
@@ -208,7 +210,12 @@ public class Appconfig {
         return filename;
 
     }
-
+    public static DefaultRetryPolicy getTimeOut() {
+        return new DefaultRetryPolicy(
+                50000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+    }
     public static String getFilename() {
         File file = new File(Environment.getExternalStorageDirectory().getPath(), "MyFolder/Images");
         if (!file.exists()) {

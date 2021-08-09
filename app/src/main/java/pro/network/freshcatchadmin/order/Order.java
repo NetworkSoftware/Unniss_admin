@@ -21,6 +21,8 @@ public class Order implements Serializable {
     String reson;
     ArrayList<Product> productBeans;
     String createdOn;
+    String addressOrg,comments,payment,paymentId,delivery,deliveryTime,grandCost,shipCost;
+    String amount,toPincode,createdon;
 
     public Order() {
     }
@@ -124,5 +126,93 @@ public class Order implements Serializable {
 
     public void setCreatedOn(String createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public String getAddressOrg() {
+        return addressOrg;
+    }
+
+    public void setAddressOrg(String addressOrg) {
+        this.addressOrg = addressOrg;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public String getPayment() {
+        return payment;
+    }
+
+    public void setPayment(String payment) {
+        this.payment = payment;
+    }
+
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public String getDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(String delivery) {
+        this.delivery = delivery;
+    }
+
+    public String getDeliveryTime() {
+        return deliveryTime;
+    }
+
+    public void setDeliveryTime(String deliveryTime) {
+        this.deliveryTime = deliveryTime;
+    }
+
+    public String getGrandCost() {
+        return grandCost;
+    }
+
+    public void setGrandCost(String grandCost) {
+        this.grandCost = grandCost;
+    }
+
+    public String getShipCost() {
+        return shipCost;
+    }
+
+    public void setShipCost(String shipCost) {
+        this.shipCost = shipCost;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public String getToPincode() {
+        return toPincode;
+    }
+
+    public void setToPincode(String toPincode) {
+        this.toPincode = toPincode;
+    }
+
+    public String getCreatedon() {
+        return createdon;
+    }
+
+    public void setCreatedon(String createdon) {
+        this.createdon = createdon;
     }
 }

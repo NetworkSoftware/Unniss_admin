@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         holder.name.setText(order.getName());
         holder.address.setText(order.getAddress());
         holder.reason.setText(order.getReson());
-        holder.orderedOn.setText(Appconfig.convertTimeToLocal(order.createdOn));
+        holder.orderedOn.setText(Appconfig.convertTimeToLocal(order.createdon));
         if (order.getStatus().equalsIgnoreCase("ordered")) {
             holder.deliveredBtn.setVisibility(View.VISIBLE);
         } else {
@@ -98,6 +99,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             @Override
             public void onClick(View view) {
                 statusListener.onCancelClick(order.id);
+            }
+        });
+
+        holder.single_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                statusListener.onProduct(order);
             }
         });
     }
@@ -161,12 +169,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         public ImageView thumbnail;
         public RecyclerView cart_sub_list;
         ImageView deliveredBtn, whatsapp, call, cancalOrder;
+        LinearLayout single_order;
 
         public MyViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.name);
             orderedOn = view.findViewById(R.id.orderedOn);
-
+            single_order = view.findViewById(R.id.single_order);
             price = view.findViewById(R.id.price);
             name = view.findViewById(R.id.name);
             phone = view.findViewById(R.id.phone);

@@ -131,6 +131,10 @@
             android:label="categories Update"
             android:theme="@style/AppThemeWhite" />
         <activity
+            android:name="pro.network.freshcatchadmin.order.SingleOrderPage"
+            android:label="single product"
+            android:theme="@style/AppThemeActionBar" />
+        <activity
             android:name="pro.network.freshcatchadmin.categories.MainActivityCategories"
             android:label="categories Main"
             android:theme="@style/AppThemeSe.NoActionBar" />
@@ -144,6 +148,15 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <provider
+            android:name="pro.network.freshcatchadmin.app.GenericFileProvider"
+            android:authorities="pro.network.freshcatchadmin.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 
 </manifest>

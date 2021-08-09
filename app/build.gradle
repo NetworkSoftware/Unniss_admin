@@ -57,6 +57,8 @@ dependencies {
     implementation files('libs/httpcore-4.3.3.jar')
     implementation project(':photoview')
 
+    implementation 'com.itextpdf:itext-pdfa:5.5.10'
+    implementation 'com.itextpdf:itextg:5.5.9'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'

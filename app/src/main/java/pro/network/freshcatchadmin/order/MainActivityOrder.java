@@ -23,6 +23,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,17 +37,25 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import pro.network.freshcatchadmin.R;
+import pro.network.freshcatchadmin.app.HeaderFooterPageEvent;
+import pro.network.freshcatchadmin.app.PdfConfig;
 import pro.network.freshcatchadmin.app.AppController;
 import pro.network.freshcatchadmin.app.Appconfig;
 import pro.network.freshcatchadmin.product.Product;
@@ -59,6 +68,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
     ProgressDialog progressDialog;
     Button loadMore;
     int offset = 0;
+    LinkedHashMap<String, String> stringStringMap = new LinkedHashMap<>();
     private RecyclerView recyclerView;
     private List<Order> orderList;
     private OrderAdapter mAdapter;
@@ -66,6 +76,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
     private OrderAdapter deliverAdapter;
     private ArrayList<Order> deliveredList;
     private RecyclerView recycler_view_delivered;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +156,25 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                                 order.setPhone(jsonObject.getString("phone"));
                                 order.setAddress(jsonObject.getString("address"));
                                 order.setReson(jsonObject.getString("reason"));
-                                order.setCreatedOn(jsonObject.getString("createdon"));
+                                order.setAddressOrg(jsonObject.has("addressOrg")?
+                                        jsonObject.getString("addressOrg"):"NA");
+                                order.setComments(jsonObject.has("comments")?
+                                        jsonObject.getString("comments"):"NA");
+                                order.setPayment(jsonObject.getString("payment"));
+                                order.setPaymentId(jsonObject.getString("paymentId"));
+                                order.setToPincode(jsonObject.has("toPincode")?
+                                        jsonObject.getString("toPincode"):"NA");
+                                order.setDelivery(jsonObject.has("delivery")?
+                                        jsonObject.getString("delivery"):"NA");
+                                order.setDeliveryTime(jsonObject.has("deliveryTime")?
+                                        jsonObject.getString("deliveryTime"):"NA");
+                                order.setGrandCost(jsonObject.getString("grandCost"));
+                                order.setShipCost(jsonObject.getString("shipCost"));
+                                order.setAmount(jsonObject.has("amount")?
+                                        jsonObject.getString("amount"):"NA");
+                                order.setCreatedon(jsonObject.getString("createdon"));
+
+
                                 ObjectMapper mapper = new ObjectMapper();
                                 Object listBeans = new Gson().fromJson(jsonObject.getString("items"),
                                         Object.class);
@@ -161,7 +190,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                                     deliveredList.add(order);
                                 }
                             } catch (Exception e) {
-
+Log.e("xxxxxxxx",e.toString());
                             }
                         }
                         mAdapter.notifyData(orderList);
@@ -191,7 +220,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
                 localHashMap.put("offset", offset * 10 + "");
-                if(getIntent().getStringExtra("status")!=null) {
+                if (getIntent().getStringExtra("status") != null) {
                     localHashMap.put("status", getIntent().getStringExtra("status"));
                 }
                 return localHashMap;
@@ -352,7 +381,24 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
         b.show();
     }
 
+    @Override
+    public void onInvoice(Order order) {
+        printFunction(order);
+    }
 
+    @Override
+    public void onProduct(Order order) {
+        getToOrderPage(order);
+    }
+
+
+    private void getToOrderPage(Order orderId) {
+        Intent intent = new Intent(MainActivityOrder.this, SingleOrderPage.class);
+        intent.putExtra("data", orderId);
+        intent.putExtra("from", "payment");
+        startActivity(intent);
+        finish();
+    }
     private void statusChange(final String id, final String status, final String reason) {
         String tag_string_req = "req_register";
         showDialog();
@@ -395,6 +441,51 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
         };
         strReq.setRetryPolicy(Appconfig.getPolicy());
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    public void printFunction(Order order) {
+        try {
+            String path = getExternalCacheDir().getPath() + "/PDF";
+            File dir = new File(path);
+            if (!dir.exists())
+                dir.mkdirs();
+            Log.d("PDFCreator", "PDF Path: " + path);
+            File file = new File(dir, stringStringMap.get("Order Id") + "_" + System.currentTimeMillis() + ".pdf");
+            if (file.exists()) {
+                file.delete();
+            }
+            FileOutputStream fOut = new FileOutputStream(file);
+
+
+            Document document = new Document(PageSize.A4, 30, 28, 40, 119);
+            PdfWriter pdfWriter = PdfWriter.getInstance(document, fOut);
+
+            document.open();
+            PdfConfig.addMetaData(document);
+            HeaderFooterPageEvent event = new HeaderFooterPageEvent();
+            pdfWriter.setPageEvent(event);
+            PdfConfig.addContent(document, order, MainActivityOrder.this);
+            document.close();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Uri uri = FileProvider.getUriForFile(this, getPackageName() + ".provider", file);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(uri);
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivity(intent);
+            } else {
+                Intent target = new Intent(Intent.ACTION_VIEW);
+                target.setDataAndType(Uri.fromFile(file), "application/pdf");
+                Intent intent = Intent.createChooser(target, "Open File");
+                startActivity(intent);
+            }
+
+        } catch (Error | Exception e) {
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
+        hideDialog();
     }
 
     private void showDialog() {
