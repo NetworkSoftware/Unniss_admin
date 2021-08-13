@@ -7,7 +7,7 @@
     <string name="search_hint">Type name…</string>
     <string name="hint_pet_name">Fresh Catch</string>
     <string name="hint_imei_name">IMEI Number</string>
-
+    <string name="image_provider">pro.network.freshcatchadmin.provider</string>
     <string name="hint_price">Price</string>
     <string name="category_model">Model</string>
     //login

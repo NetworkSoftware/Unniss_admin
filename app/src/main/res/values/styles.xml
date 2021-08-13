@@ -47,8 +47,24 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="RoundShapeAppearance" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+    <style name="TitleTextStyle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textSize">20dp</item>
+    </style>
+    <style name="RoundShapeTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="shapeAppearanceMediumComponent">@style/RoundShapeAppearance</item>
+        <item name="android:fontFamily">@font/sans</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/TitleTextStyle</item>
+
+    </style>
+
     <style name="AppThemeSe.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AppThemeSe.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 
 </resources>

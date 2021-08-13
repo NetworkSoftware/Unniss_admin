@@ -138,6 +138,19 @@
             android:name="pro.network.freshcatchadmin.categories.MainActivityCategories"
             android:label="categories Main"
             android:theme="@style/AppThemeSe.NoActionBar" />
+
+        <activity
+            android:name="pro.network.freshcatchadmin.pincode.PincodeRegister"
+            android:label="categories Main"
+            android:theme="@style/AppThemeActionBar" />
+        <activity
+            android:name="pro.network.freshcatchadmin.pincode.PincodeUpdate"
+            android:label="categories Main"
+            android:theme="@style/AppThemeActionBar" />
+        <activity
+            android:name="pro.network.freshcatchadmin.pincode.MainActivityPincode"
+            android:label="categories Main"
+            android:theme="@style/AppThemeSe.NoActionBar" />
         <activity android:name=".app.ActivityMediaOnline" />
 
         <service

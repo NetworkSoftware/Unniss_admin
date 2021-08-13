@@ -9,5 +9,6 @@ public interface StatusListener {
     void onCancelClick(String id);
     void onInvoice(Order id);
     void onProduct(Order id);
+    void onWallet(Order id);
 
 }

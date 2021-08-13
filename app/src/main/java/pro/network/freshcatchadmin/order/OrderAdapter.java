@@ -53,6 +53,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         final Order order = orderListFiltered.get(position);
         holder.price.setText(order.getPrice());
         holder.quantity.setText(order.getQuantity());
+        holder.order_id.setText(order.getId());
         holder.status.setText(order.getStatus());
         holder.phone.setText(order.getPhone());
         holder.name.setText(order.getName());
@@ -103,6 +104,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         });
 
         holder.single_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                statusListener.onProduct(order);
+            }
+        });
+        holder.wallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 statusListener.onProduct(order);
@@ -165,10 +172,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, price, status, quantity, phone, orderedOn, address,reason;
+        public TextView name, price, status, quantity, phone, orderedOn, address,reason,order_id;
         public ImageView thumbnail;
         public RecyclerView cart_sub_list;
-        ImageView deliveredBtn, whatsapp, call, cancalOrder;
+        ImageView deliveredBtn, whatsapp, call, cancalOrder,wallet;
         LinearLayout single_order;
 
         public MyViewHolder(View view) {
@@ -189,6 +196,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             call = view.findViewById(R.id.call);
             address = view.findViewById(R.id.address);
             reason=view.findViewById(R.id.reason);
+            order_id=view.findViewById(R.id.order_id);
+            wallet=view.findViewById(R.id.wallet);
         }
     }
 }

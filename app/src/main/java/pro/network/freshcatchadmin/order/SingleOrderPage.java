@@ -51,6 +51,7 @@ import pro.network.freshcatchadmin.app.HeaderFooterPageEvent;
 import pro.network.freshcatchadmin.app.PdfConfig;
 import pro.network.freshcatchadmin.product.Product;
 
+import static pro.network.freshcatchadmin.app.Appconfig.FETCH_ADDRESS;
 import static pro.network.freshcatchadmin.app.Appconfig.GET_ALL_ADDRESS;
 import static pro.network.freshcatchadmin.app.Appconfig.decimalFormat;
 
@@ -238,7 +239,7 @@ public class SingleOrderPage extends AppCompatActivity implements StatusListener
     private void fetchAddressById(final String id) {
         String tag_string_req = "req_register_add";
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                GET_ALL_ADDRESS, new Response.Listener<String>() {
+                FETCH_ADDRESS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("Register Response: ", response);
@@ -381,6 +382,11 @@ public class SingleOrderPage extends AppCompatActivity implements StatusListener
 
     @Override
     public void onProduct(Order id) {
+
+    }
+
+    @Override
+    public void onWallet(Order id) {
 
     }
 

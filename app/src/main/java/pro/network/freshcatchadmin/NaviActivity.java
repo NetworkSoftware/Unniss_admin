@@ -11,6 +11,7 @@ import pro.network.freshcatchadmin.banner.MainActivityBanner;
 import pro.network.freshcatchadmin.categories.MainActivityCategories;
 import pro.network.freshcatchadmin.news.NewsRegister;
 import pro.network.freshcatchadmin.order.MainActivityOrder;
+import pro.network.freshcatchadmin.pincode.MainActivityPincode;
 import pro.network.freshcatchadmin.product.MainActivityProduct;
 
 public class NaviActivity extends AppCompatActivity {
@@ -47,6 +48,15 @@ public class NaviActivity extends AppCompatActivity {
 
             }
         });
+        CardView pincode = (CardView) findViewById(R.id.pincode);
+        pincode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent io = new Intent(NaviActivity.this, MainActivityPincode.class);
+                startActivity(io);
+
+            }
+        });
         CardView banner = (CardView) findViewById(R.id.banner);
         banner.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,13 +71,6 @@ public class NaviActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 navOrderPage("ordered");
-            }
-        });
-        CardView returned = (CardView) findViewById(R.id.returned);
-        returned.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navOrderPage("Returned");
             }
         });
 

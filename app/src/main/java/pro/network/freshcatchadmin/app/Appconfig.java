@@ -33,16 +33,9 @@ public class Appconfig {
     //Key values
     public static final String shopIdKey = "shopIdKey";
     public static final String mypreference = "mypref";
-    public static DecimalFormat decimalFormat = new DecimalFormat("0");
     public static final String ip = "http://thestockbazaar.com/admin/e-commerce/freshcatch";
-
-
-    public static String URL_IMAGE_UPLOAD = ip + "/fileUpload.php";
-    public static String BANNER_CREATE = ip + "/fileFeed.php";
-    public static String BANNER_GET_ALL = ip + "/get_all_feed.php";
-    public static String BANNER_DELETE = ip + "/fileDelete.php";
     public static final String GET_ALL_ADDRESS = ip + "/get_all_address.php";
-
+    public static final String FETCH_ADDRESS = ip + "/fetch_address.php";
     //Stack
     public static final String PRODUCT_CREATE = ip + "/create_stock.php";
     public static final String PRODUCT_UPDATE = ip + "/update_stock.php";
@@ -53,23 +46,47 @@ public class Appconfig {
     public static final String CATEGORIES_UPDATE = ip + "/update_category.php";
     public static final String CATEGORIES_DELETE = ip + "/delete_category.php";
     public static final String CATEGORIES_GET_ALL = ip + "/get_all_category.php";
+    //Pincode
+    public static final String PINCODE = ip + "/create_pincode.php";
+    public static final String PINCODE_UPDATE = ip + "/update_pincode.php";
+    public static final String PINCODE_GET_ALL = ip + "/get_all_pincode.php";
+    public static final String PINCODE_DELETE = ip + "/delete_pincode.php";
 
 
     public static final String NEWS_CREATE = ip + "/create_news.php";
     public static final String GET_NEWS = ip + "/get_news.php";
-
     //Banner
     public static final String BANNERS_CREATE = ip + "/create_banner.php";
     public static final String BANNERS_UPDATE = ip + "/update_stock.php";
     public static final String BANNERS_GET_ALL = ip + "/dataFetchAll_banner.php";
     public static final String BANNERS_DELETE = ip + "/delete_banner.php";
+
+    //Wellet
+    public static final String WALLET_GET_ALL = ip + "/get_all_wallet.php";
+    public static final String CREATE_WALLET = ip + "/create_wallet.php";
     //Order
     public static final String ORDER_GET_ALL = ip + "/dataFetchAll_order.php";
     public static final String ORDER_CHANGE_STATUS = ip + "/order_change_status.php";
-
-
     public static final String IMAGE_URL = ip + "/images/";
+    public static DecimalFormat decimalFormat = new DecimalFormat("0");
+    public static String URL_IMAGE_UPLOAD = ip + "/fileUpload.php";
+    public static String BANNER_CREATE = ip + "/fileFeed.php";
+    public static String BANNER_GET_ALL = ip + "/get_all_feed.php";
+    public static String BANNER_DELETE = ip + "/fileDelete.php";
     public static Glide locationMap;
+    public static String[] QTY_TYPE = new String[]{
+            "Kg", "Nos"
+    };
+    public static Map<String, String[]> stringMap = new HashMap<String, String[]>() {{
+        put("Fashion", new String[]{});
+        put("Mobiles and Tablets", new String[]{});
+        put("Consumer Electronics", new String[]{});
+        put("Books", new String[]{});
+        put("Baby Products", new String[]{});
+    }};
+    public static String[] CATEGORY = new String[]{
+            "Fashion", "Mobiles and Tablets", "Consumer Electronics", "Books", "Baby Products",
+    };
 
     public static String getResizedImage(String path, boolean isResized) {
         if (isResized) {
@@ -77,7 +94,6 @@ public class Appconfig {
         }
         return path;
     }
-
 
     public static String compressImage(String filePath) {
 
@@ -109,11 +125,11 @@ public class Appconfig {
                 float tempRatio = maxWidth / actualWidth;
                 actualHeight = (int) (tempRatio * actualHeight);
                 actualWidth = (int) maxWidth;
-            }else  if (actualWidth < actualHeight) {
+            } else if (actualWidth < actualHeight) {
                 float tempRatio = maxHeight / actualHeight;
                 actualWidth = (int) (tempRatio * actualWidth);
                 actualHeight = (int) maxHeight;
-            }else {
+            } else {
                 actualHeight = (int) maxHeight;
                 actualWidth = (int) maxWidth;
             }
@@ -210,12 +226,14 @@ public class Appconfig {
         return filename;
 
     }
+
     public static DefaultRetryPolicy getTimeOut() {
         return new DefaultRetryPolicy(
                 50000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
     }
+
     public static String getFilename() {
         File file = new File(Environment.getExternalStorageDirectory().getPath(), "MyFolder/Images");
         if (!file.exists()) {
@@ -224,18 +242,6 @@ public class Appconfig {
         String uriSting = (file.getAbsolutePath() + "/" + System.currentTimeMillis() + ".jpg");
         return uriSting;
 
-    }
-
-    private String getRealPathFromURI(String contentURI, Context context) {
-        Uri contentUri = Uri.parse(contentURI);
-        Cursor cursor = context.getContentResolver().query(contentUri, null, null, null, null);
-        if (cursor == null) {
-            return contentUri.getPath();
-        } else {
-            cursor.moveToFirst();
-            int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            return cursor.getString(index);
-        }
     }
 
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
@@ -268,6 +274,7 @@ public class Appconfig {
             return time;
         }
     }
+
     public static String[] getSubCatFromCat(String category) {
         if (stringMap.containsKey(category)) {
             return stringMap.get(category);
@@ -275,25 +282,30 @@ public class Appconfig {
         return new String[]{};
     }
 
-    public static String[] QTY_TYPE = new String[]{
-            "Kg", "Nos"
-    };
-    public static Map<String, String[]> stringMap = new HashMap<String, String[]>() {{
-        put("Fashion",new String[]{});
-        put("Mobiles and Tablets",new String[]{});
-        put("Consumer Electronics",new String[]{});
-        put("Books",new String[]{});
-        put("Baby Products",new String[]{});
-           }};
-
-    public static String[] CATEGORY = new String[]{
-            "Fashion", "Mobiles and Tablets","Consumer Electronics","Books","Baby Products",
-    };
-
     public static DefaultRetryPolicy getPolicy() {
         return new DefaultRetryPolicy(
                 50000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+    }
+
+    private String getRealPathFromURI(String contentURI, Context context) {
+        Uri contentUri = Uri.parse(contentURI);
+        Cursor cursor = context.getContentResolver().query(contentUri, null, null, null, null);
+        if (cursor == null) {
+            return contentUri.getPath();
+        } else {
+            cursor.moveToFirst();
+            int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            return cursor.getString(index);
+        }
+    }
+    public static String dayInMonthFormat(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("E, dd MMM yyyy HH:mm");
+        return sdf.format(date);
+    }
+    public static String getDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(date);
     }
 }

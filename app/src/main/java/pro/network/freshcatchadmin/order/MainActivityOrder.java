@@ -391,6 +391,15 @@ Log.e("xxxxxxxx",e.toString());
         getToOrderPage(order);
     }
 
+    @Override
+    public void onWallet(Order id) {
+        wallet();
+    }
+
+    private void wallet() {
+
+    }
+
 
     private void getToOrderPage(Order orderId) {
         Intent intent = new Intent(MainActivityOrder.this, SingleOrderPage.class);
