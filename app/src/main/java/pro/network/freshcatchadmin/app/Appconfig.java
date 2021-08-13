@@ -34,6 +34,9 @@ public class Appconfig {
     public static final String shopIdKey = "shopIdKey";
     public static final String mypreference = "mypref";
     public static final String ip = "http://thestockbazaar.com/admin/e-commerce/freshcatch";
+
+ //   public static final String ip = "http://192.168.1.100:8103/prisma/freshcatch";
+
     public static final String GET_ALL_ADDRESS = ip + "/get_all_address.php";
     public static final String FETCH_ADDRESS = ip + "/fetch_address.php";
     //Stack
@@ -61,12 +64,11 @@ public class Appconfig {
     public static final String BANNERS_GET_ALL = ip + "/dataFetchAll_banner.php";
     public static final String BANNERS_DELETE = ip + "/delete_banner.php";
 
-    //Wellet
-    public static final String WALLET_GET_ALL = ip + "/get_all_wallet.php";
-    public static final String CREATE_WALLET = ip + "/create_wallet.php";
     //Order
     public static final String ORDER_GET_ALL = ip + "/dataFetchAll_order.php";
     public static final String ORDER_CHANGE_STATUS = ip + "/order_change_status.php";
+    public static final String UPDATE_WALLET = ip + "/update_wallet.php";
+
     public static final String IMAGE_URL = ip + "/images/";
     public static DecimalFormat decimalFormat = new DecimalFormat("0");
     public static String URL_IMAGE_UPLOAD = ip + "/fileUpload.php";

@@ -1,10 +1,6 @@
 package pro.network.freshcatchadmin.order;
 
 import android.content.Context;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +9,9 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +25,11 @@ import pro.network.freshcatchadmin.app.Appconfig;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder>
         implements Filterable {
-    private Context context;
+    StatusListener statusListener;
+    private final Context context;
     private List<Order> orderList;
     private List<Order> orderListFiltered;
-    private ContactsAdapterListener listener;
-    StatusListener statusListener;
+    private final ContactsAdapterListener listener;
 
     public OrderAdapter(Context context, List<Order> orderList, ContactsAdapterListener listener, StatusListener statusListener) {
         this.context = context;
@@ -59,11 +58,16 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         holder.name.setText(order.getName());
         holder.address.setText(order.getAddress());
         holder.reason.setText(order.getReson());
+        holder.total_coupon.setText(order.getTotalAmt());
+        holder.cashback.setText("- ₹" + order.getCashback());
         holder.orderedOn.setText(Appconfig.convertTimeToLocal(order.createdon));
         if (order.getStatus().equalsIgnoreCase("ordered")) {
             holder.deliveredBtn.setVisibility(View.VISIBLE);
+            holder.wallet.setVisibility(View.VISIBLE);
         } else {
             holder.deliveredBtn.setVisibility(View.GONE);
+            holder.wallet.setVisibility(View.GONE);
+
         }
 
         if (!order.getStatus().equalsIgnoreCase("canceled")
@@ -112,7 +116,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         holder.wallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                statusListener.onProduct(order);
+                statusListener.onWallet(order);
             }
         });
     }
@@ -172,10 +176,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, price, status, quantity, phone, orderedOn, address,reason,order_id;
+        public TextView name, price, cashback,
+                status, quantity, phone, orderedOn, address,total_coupon, reason, order_id;
         public ImageView thumbnail;
         public RecyclerView cart_sub_list;
-        ImageView deliveredBtn, whatsapp, call, cancalOrder,wallet;
+        ImageView deliveredBtn, whatsapp, call, cancalOrder, wallet;
         LinearLayout single_order;
 
         public MyViewHolder(View view) {
@@ -195,9 +200,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             cancalOrder = view.findViewById(R.id.cancalOrder);
             call = view.findViewById(R.id.call);
             address = view.findViewById(R.id.address);
-            reason=view.findViewById(R.id.reason);
-            order_id=view.findViewById(R.id.order_id);
-            wallet=view.findViewById(R.id.wallet);
+            reason = view.findViewById(R.id.reason);
+            order_id = view.findViewById(R.id.order_id);
+            wallet = view.findViewById(R.id.wallet);
+            cashback = view.findViewById(R.id.cashback);
+            total_coupon = view.findViewById(R.id.total_coupon);
         }
     }
 }

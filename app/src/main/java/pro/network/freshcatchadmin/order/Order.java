@@ -15,6 +15,8 @@ public class Order implements Serializable {
     String quantity;
     String price;
     String status;
+    String user;
+    String cashback;
     String name;
     String phone;
     String address;
@@ -22,7 +24,7 @@ public class Order implements Serializable {
     ArrayList<Product> productBeans;
     String createdOn;
     String addressOrg,comments,payment,paymentId,delivery,deliveryTime,grandCost,shipCost;
-    String amount,toPincode,createdon;
+    String amount,toPincode,createdon,totalAmt;
 
     public Order() {
     }
@@ -214,5 +216,29 @@ public class Order implements Serializable {
 
     public void setCreatedon(String createdon) {
         this.createdon = createdon;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getCashback() {
+        return cashback;
+    }
+
+    public void setCashback(String cashback) {
+        this.cashback = cashback;
+    }
+
+    public String getTotalAmt() {
+        return totalAmt;
+    }
+
+    public void setTotalAmt(String totalAmt) {
+        this.totalAmt = totalAmt;
     }
 }

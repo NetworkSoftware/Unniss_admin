@@ -10,12 +10,15 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,9 +36,12 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.PageSize;
@@ -54,14 +60,15 @@ import java.util.List;
 import java.util.Map;
 
 import pro.network.freshcatchadmin.R;
-import pro.network.freshcatchadmin.app.HeaderFooterPageEvent;
-import pro.network.freshcatchadmin.app.PdfConfig;
 import pro.network.freshcatchadmin.app.AppController;
 import pro.network.freshcatchadmin.app.Appconfig;
+import pro.network.freshcatchadmin.app.HeaderFooterPageEvent;
+import pro.network.freshcatchadmin.app.PdfConfig;
 import pro.network.freshcatchadmin.product.Product;
 
 import static pro.network.freshcatchadmin.app.Appconfig.ORDER_CHANGE_STATUS;
 import static pro.network.freshcatchadmin.app.Appconfig.ORDER_GET_ALL;
+import static pro.network.freshcatchadmin.app.Appconfig.UPDATE_WALLET;
 
 public class MainActivityOrder extends AppCompatActivity implements OrderAdapter.ContactsAdapterListener, StatusListener {
     private static final String TAG = MainActivityOrder.class.getSimpleName();
@@ -156,24 +163,26 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                                 order.setPhone(jsonObject.getString("phone"));
                                 order.setAddress(jsonObject.getString("address"));
                                 order.setReson(jsonObject.getString("reason"));
-                                order.setAddressOrg(jsonObject.has("addressOrg")?
-                                        jsonObject.getString("addressOrg"):"NA");
-                                order.setComments(jsonObject.has("comments")?
-                                        jsonObject.getString("comments"):"NA");
+                                order.setAddressOrg(jsonObject.has("addressOrg") ?
+                                        jsonObject.getString("addressOrg") : "NA");
+                                order.setComments(jsonObject.has("comments") ?
+                                        jsonObject.getString("comments") : "NA");
                                 order.setPayment(jsonObject.getString("payment"));
                                 order.setPaymentId(jsonObject.getString("paymentId"));
-                                order.setToPincode(jsonObject.has("toPincode")?
-                                        jsonObject.getString("toPincode"):"NA");
-                                order.setDelivery(jsonObject.has("delivery")?
-                                        jsonObject.getString("delivery"):"NA");
-                                order.setDeliveryTime(jsonObject.has("deliveryTime")?
-                                        jsonObject.getString("deliveryTime"):"NA");
+                                order.setToPincode(jsonObject.has("toPincode") ?
+                                        jsonObject.getString("toPincode") : "NA");
+                                order.setDelivery(jsonObject.has("delivery") ?
+                                        jsonObject.getString("delivery") : "NA");
+                                order.setDeliveryTime(jsonObject.has("deliveryTime") ?
+                                        jsonObject.getString("deliveryTime") : "NA");
                                 order.setGrandCost(jsonObject.getString("grandCost"));
                                 order.setShipCost(jsonObject.getString("shipCost"));
-                                order.setAmount(jsonObject.has("amount")?
-                                        jsonObject.getString("amount"):"NA");
+                                order.setAmount(jsonObject.has("amount") ?
+                                        jsonObject.getString("amount") : "NA");
                                 order.setCreatedon(jsonObject.getString("createdon"));
-
+                                order.setUser(jsonObject.getString("user"));
+                                order.setCashback(jsonObject.getString("cashback"));
+                                order.setTotalAmt(jsonObject.getString("totalAmt"));
 
                                 ObjectMapper mapper = new ObjectMapper();
                                 Object listBeans = new Gson().fromJson(jsonObject.getString("items"),
@@ -190,7 +199,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                                     deliveredList.add(order);
                                 }
                             } catch (Exception e) {
-Log.e("xxxxxxxx",e.toString());
+                                Log.e("xxxxxxxx", e.toString());
                             }
                         }
                         mAdapter.notifyData(orderList);
@@ -392,12 +401,8 @@ Log.e("xxxxxxxx",e.toString());
     }
 
     @Override
-    public void onWallet(Order id) {
-        wallet();
-    }
-
-    private void wallet() {
-
+    public void onWallet(Order order) {
+        showCashBack(order);
     }
 
 
@@ -408,6 +413,7 @@ Log.e("xxxxxxxx",e.toString());
         startActivity(intent);
         finish();
     }
+
     private void statusChange(final String id, final String status, final String reason) {
         String tag_string_req = "req_register";
         showDialog();
@@ -506,4 +512,95 @@ Log.e("xxxxxxxx",e.toString());
         if (progressDialog.isShowing())
             progressDialog.dismiss();
     }
+
+    private void showCashBack(Order order) {
+        final RoundedBottomSheetDialog mBottomSheetDialog = new RoundedBottomSheetDialog(MainActivityOrder.this);
+        LayoutInflater inflater = MainActivityOrder.this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.bottom_amount_layout, null);
+
+        TextInputLayout reviewTxt = dialogView.findViewById(R.id.walletTxt);
+        TextInputEditText walletEdit = dialogView.findViewById(R.id.wallet);
+        final Button submit = dialogView.findViewById(R.id.submit);
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (walletEdit.getText().toString().length() <= 0) {
+                    Toast.makeText(MainActivityOrder.this, "Enter Valid Cashback", Toast.LENGTH_LONG).show();
+                    return;
+                } else {
+                    updateWallet(order.getUser(), walletEdit.getText().toString(), order.id, mBottomSheetDialog);
+                }
+            }
+        });
+        mBottomSheetDialog.setContentView(dialogView);
+        walletEdit.requestFocus();
+        mBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        mBottomSheetDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        RoundedBottomSheetDialog d = (RoundedBottomSheetDialog) dialog;
+                        FrameLayout bottomSheet = d.findViewById(R.id.design_bottom_sheet);
+                        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                }, 0);
+            }
+        });
+        mBottomSheetDialog.show();
+    }
+
+
+    private void updateWallet(final String userId, final String wallet, final String orderId, RoundedBottomSheetDialog mBottomSheetDialog) {
+        String tag_string_req = "req_register";
+        showDialog();
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                UPDATE_WALLET, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                hideDialog();
+                Log.d("Register Response: ", response);
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    Toast.makeText(getApplication(), jObj.getString("message"), Toast.LENGTH_SHORT).show();
+                    int success = jObj.getInt("success");
+                    if (success == 1) {
+                        if (mBottomSheetDialog != null) {
+                            mBottomSheetDialog.cancel();
+                        }
+                        offset = 0;
+                        fetchContacts();
+                    }
+                } catch (JSONException e) {
+                    Log.e("xxxxxxxxxxx", e.toString());
+                    Toast.makeText(getApplication(), "Some Network Error.Try after some time", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideDialog();
+                Log.e("Registration Error: ", error.getMessage());
+                Toast.makeText(getApplication(),
+                        "Some Network Error.Try after some time", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                HashMap localHashMap = new HashMap();
+                localHashMap.put("userId", userId);
+                localHashMap.put("amt", wallet);
+                localHashMap.put("orderId", orderId);
+                return localHashMap;
+            }
+        };
+        strReq.setRetryPolicy(Appconfig.getPolicy());
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+
 }
