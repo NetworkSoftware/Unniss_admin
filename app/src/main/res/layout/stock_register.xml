@@ -154,6 +154,7 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:hint="Select Type"
+                            android:visibility="gone"
                             android:textColor="@color/black"
                             android:textColorHint="#c6c6c6"
                             android:textSize="15dp"

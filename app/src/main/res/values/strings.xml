@@ -1,13 +1,13 @@
 <resources>
-    <string name="app_name">Fresh Catch Admin</string>
+    <string name="app_name">Unniss Admin</string>
 
     <string name="action_settings">Settings</string>
     <string name="toolbar_title">Stocks</string>
     <string name="action_search">Search</string>
     <string name="search_hint">Type name…</string>
-    <string name="hint_pet_name">Fresh Catch</string>
+    <string name="hint_pet_name">Unniss</string>
     <string name="hint_imei_name">IMEI Number</string>
-    <string name="image_provider">pro.network.freshcatchadmin.provider</string>
+    <string name="image_provider">pro.network.unnissadmin.provider</string>
     <string name="hint_price">Price</string>
     <string name="category_model">Model</string>
     //login

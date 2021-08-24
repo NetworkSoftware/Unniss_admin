@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="pro.network.freshcatchadmin">
+    package="pro.network.unnissadmin">
 
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -28,12 +28,12 @@
         android:required="true" />
 
     <application
-        android:name="pro.network.freshcatchadmin.app.AppController"
+        android:name="pro.network.unnissadmin.app.AppController"
         android:allowBackup="true"
-        android:icon="@drawable/fresh_icon"
+        android:icon="@drawable/unniss"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:roundIcon="@drawable/fresh_icon"
+        android:roundIcon="@drawable/unniss"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
@@ -44,7 +44,7 @@
             android:required="false" />
 
         <activity
-            android:name="pro.network.freshcatchadmin.StartActivity"
+            android:name="pro.network.unnissadmin.StartActivity"
             android:label="@string/app_name"
             android:theme="@style/AppThemeNowhite">
             <intent-filter>
@@ -54,8 +54,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="pro.network.freshcatchadmin.NaviActivity"
-            android:label="@string/app_name" />
+            android:name="pro.network.unnissadmin.NaviActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppThemeActionBar"/>
 
 
         <meta-data
@@ -63,7 +64,7 @@
             android:value="AIzaSyBufZZ6hR1jYcnwqXg2egbpvCU8Vbd2UU0" />
 
         <activity
-            android:name="pro.network.freshcatchadmin.product.MainActivityProduct"
+            android:name="pro.network.unnissadmin.product.MainActivityProduct"
             android:label="@string/app_name"
             android:theme="@style/AppThemeSe.NoActionBar">
 
@@ -77,7 +78,7 @@
 
         </activity>
         <activity
-            android:name="pro.network.freshcatchadmin.banner.MainActivityBanner"
+            android:name="pro.network.unnissadmin.banner.MainActivityBanner"
             android:label="@string/app_name"
             android:theme="@style/AppThemeSe.NoActionBar">
 
@@ -91,7 +92,7 @@
 
         </activity>
         <activity
-            android:name="pro.network.freshcatchadmin.order.MainActivityOrder"
+            android:name="pro.network.unnissadmin.order.MainActivityOrder"
             android:label="@string/app_name"
             android:theme="@style/AppThemeNowhite">
 
@@ -106,55 +107,55 @@
         </activity>
 
         <activity
-            android:name="pro.network.freshcatchadmin.product.ProductRegister"
+            android:name="pro.network.unnissadmin.product.ProductRegister"
             android:label="Stock Register"
             android:theme="@style/AppThemeWhite" />
         <activity
-            android:name="pro.network.freshcatchadmin.banner.BannerRegister"
+            android:name="pro.network.unnissadmin.banner.BannerRegister"
             android:label="Banner Upload"
             android:theme="@style/AppThemeWhite" />
         <activity
-            android:name="pro.network.freshcatchadmin.product.ProductUpdate"
+            android:name="pro.network.unnissadmin.product.ProductUpdate"
             android:label="Stock Update"
             android:theme="@style/AppThemeWhite" />
         <activity
-            android:name="pro.network.freshcatchadmin.categories.CategoriesRegister"
+            android:name="pro.network.unnissadmin.categories.CategoriesRegister"
             android:label="categories Register"
-            android:theme="@style/AppThemeWhite" />
+            android:theme="@style/AppThemeActionBar" />
         <activity
-            android:name="pro.network.freshcatchadmin.news.NewsRegister"
+            android:name="pro.network.unnissadmin.news.NewsRegister"
             android:label="அறிவிப்பு"
             android:theme="@style/AppThemeWhite" />
 
         <activity
-            android:name="pro.network.freshcatchadmin.categories.CategoriesUpdate"
+            android:name="pro.network.unnissadmin.categories.CategoriesUpdate"
             android:label="categories Update"
-            android:theme="@style/AppThemeWhite" />
+            android:theme="@style/AppThemeActionBar" />
         <activity
-            android:name="pro.network.freshcatchadmin.order.SingleOrderPage"
+            android:name="pro.network.unnissadmin.order.SingleOrderPage"
             android:label="single product"
             android:theme="@style/AppThemeActionBar" />
         <activity
-            android:name="pro.network.freshcatchadmin.categories.MainActivityCategories"
+            android:name="pro.network.unnissadmin.categories.MainActivityCategories"
             android:label="categories Main"
             android:theme="@style/AppThemeSe.NoActionBar" />
 
         <activity
-            android:name="pro.network.freshcatchadmin.pincode.PincodeRegister"
+            android:name="pro.network.unnissadmin.pincode.PincodeRegister"
             android:label="categories Main"
             android:theme="@style/AppThemeActionBar" />
         <activity
-            android:name="pro.network.freshcatchadmin.pincode.PincodeUpdate"
+            android:name="pro.network.unnissadmin.pincode.PincodeUpdate"
             android:label="categories Main"
             android:theme="@style/AppThemeActionBar" />
         <activity
-            android:name="pro.network.freshcatchadmin.pincode.MainActivityPincode"
+            android:name="pro.network.unnissadmin.pincode.MainActivityPincode"
             android:label="categories Main"
             android:theme="@style/AppThemeSe.NoActionBar" />
-        <activity android:name=".app.ActivityMediaOnline" />
+        <activity android:name="pro.network.unnissadmin.app.ActivityMediaOnline" />
 
         <service
-            android:name="pro.network.freshcatchadmin.app.FirebaseMessageReceiver"
+            android:name="pro.network.unnissadmin.app.FirebaseMessageReceiver"
             android:exported="false"
             android:stopWithTask="false">
             <intent-filter>
@@ -162,8 +163,8 @@
             </intent-filter>
         </service>
         <provider
-            android:name="pro.network.freshcatchadmin.app.GenericFileProvider"
-            android:authorities="pro.network.freshcatchadmin.provider"
+            android:name="pro.network.unnissadmin.app.GenericFileProvider"
+            android:authorities="pro.network.unnissadmin.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 30
     defaultConfig {
-        applicationId "pro.network.freshcatchadmin"
+        applicationId "pro.network.unnissadmin"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
@@ -86,6 +86,5 @@ dependencies {
     )
 
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
-
 }
 apply plugin: 'com.google.gms.google-services'

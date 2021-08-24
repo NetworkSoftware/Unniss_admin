@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "1046234707734",
-    "project_id": "fresh-catch-admin",
-    "storage_bucket": "fresh-catch-admin.appspot.com"
+    "project_number": "1042678042030",
+    "project_id": "unniss-admin",
+    "storage_bucket": "unniss-admin.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1046234707734:android:c70b2a63ef5fc2f1140237",
+        "mobilesdk_app_id": "1:1042678042030:android:deb81fe7d30411031c0c3f",
         "android_client_info": {
-          "package_name": "pro.network.freshcatchadmin"
+          "package_name": "pro.network.unnissadmin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1046234707734-m4rkb5r8vailg227djk968ther51god8.apps.googleusercontent.com",
+          "client_id": "1042678042030-k1ecptduhov3u423l2dohim2pj5d2q01.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCD2qtwV-UsE4aW2Hz8Y-Tgux3odLcUq3I"
+          "current_key": "AIzaSyC-okdf-tDARfOekNt1FOEKCCKPDRbMbV8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1046234707734-m4rkb5r8vailg227djk968ther51god8.apps.googleusercontent.com",
+              "client_id": "1042678042030-k1ecptduhov3u423l2dohim2pj5d2q01.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
