@@ -88,7 +88,7 @@ public class MainActivityCategories extends AppCompatActivity implements Categor
                 CATEGORIES_GET_ALL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("Register Response: ", response);
+                Log.e("Register Response: ", response);
                 hideDialog();
                 try {
                     JSONObject jObj = new JSONObject(response);
@@ -122,7 +122,6 @@ public class MainActivityCategories extends AppCompatActivity implements Categor
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("Registration Error: ", error.getMessage());
                 Toast.makeText(MainActivityCategories.this,
                         "Some Network Error.Try after some time", Toast.LENGTH_LONG).show();
             }

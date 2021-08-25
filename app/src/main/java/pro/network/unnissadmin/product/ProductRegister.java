@@ -7,12 +7,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,11 +17,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
@@ -58,7 +57,6 @@ import pro.network.unnissadmin.app.Appconfig;
 import pro.network.unnissadmin.app.Imageutils;
 
 import static pro.network.unnissadmin.app.Appconfig.CATEGORIES_GET_ALL;
-import static pro.network.unnissadmin.app.Appconfig.CATEGORY;
 import static pro.network.unnissadmin.app.Appconfig.PRODUCT_CREATE;
 import static pro.network.unnissadmin.app.Appconfig.QTY_TYPE;
 
@@ -68,33 +66,31 @@ import static pro.network.unnissadmin.app.Appconfig.QTY_TYPE;
 
 public class ProductRegister extends AppCompatActivity implements Imageutils.ImageAttachmentListener, ImageClick {
 
-    private RecyclerView imagelist;
-    private ArrayList<String> samplesList = new ArrayList<>();
+    public static String[] CATEGORY = new String[]{
+    };
     AddImageAdapter maddImageAdapter;
-
-    AutoCompleteTextView brand;
+    EditText brand;
     EditText model;
     EditText price;
     EditText ram;
-
     EditText rom, description;
-
-    private ProgressDialog pDialog;
     MaterialBetterSpinner category;
     MaterialBetterSpinner stock_update;
-
-    private String[] STOCKUPDATE = new String[]{
-            "In Stock", "Currently Unavailable",
-    };
-
     String studentId = null;
     Imageutils imageutils;
-    private String imageUrl = "";
     ImageView image_placeholder, image_wallpaper;
     CardView itemsAdd;
     EditText rqty;
-    private MaterialBetterSpinner rqtyType;
     TextView submit;
+    private RecyclerView imagelist;
+    private ArrayList<String> samplesList = new ArrayList<>();
+    private ProgressDialog pDialog;
+    private final String[] STOCKUPDATE = new String[]{
+            "instock", "outofstock",
+    };
+    private String imageUrl = "";
+    private MaterialBetterSpinner rqtyType;
+    private Map<String, String> idCatMap = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,7 +111,7 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
         });
         samplesList = new ArrayList<>();
         imagelist = (RecyclerView) findViewById(R.id.imagelist);
-        maddImageAdapter = new AddImageAdapter(this,samplesList,this);
+        maddImageAdapter = new AddImageAdapter(this, samplesList, this);
         final LinearLayoutManager addManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         imagelist.setLayoutManager(addManager1);
         imagelist.setAdapter(maddImageAdapter);
@@ -135,9 +131,6 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
         });
 
 
-
-
-
         stock_update = (MaterialBetterSpinner) findViewById(R.id.stock_update);
 
         ArrayAdapter<String> stockAdapter = new ArrayAdapter<String>(this,
@@ -150,11 +143,6 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
         });
 
         brand = findViewById(R.id.brand);
-        ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, Appconfig.getSubCatFromCat(CATEGORY[0]));
-        brand.setAdapter(brandAdapter);
-        brand.setThreshold(1);
-
 
 
         pDialog = new ProgressDialog(this);
@@ -170,8 +158,6 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
         ArrayAdapter<String> rqtyTypeAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, QTY_TYPE);
         rqtyType.setAdapter(rqtyTypeAdapter);
-
-
 
 
         submit = (TextView) findViewById(R.id.submit);
@@ -213,17 +199,13 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
                 PRODUCT_CREATE, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("Register Response: ", response.toString());
+                Log.d("Register Response: ", response);
                 hideDialog();
                 try {
-                    JSONObject jsonObject = new JSONObject(response.split("0000")[1]);
+                    JSONObject jsonObject = new JSONObject(response);
                     boolean success = jsonObject.getBoolean("success");
                     String msg = jsonObject.getString("message");
                     if (success) {
-                     //   final String descrip = description.getText().toString();
-                     //   sendNotification(brand.getText().toString() + " " + model.getText().toString()
-                     //           , (descrip.length() > 30 ? descrip.substring(0, 9) + "..." :
-                      //                  descrip),jsonObject.getString("token"));
                         finish();
                     }
                     Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
@@ -243,17 +225,17 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
         }) {
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
-                localHashMap.put("category", category.getText().toString());
-                localHashMap.put("brand", brand.getText().toString());
-                localHashMap.put("model", model.getText().toString());
+                localHashMap.put("category", idCatMap.get(category.getText().toString()));
+                localHashMap.put("subcategory", brand.getText().toString());
+                localHashMap.put("name", model.getText().toString());
                 localHashMap.put("price", price.getText().toString());
                 localHashMap.put("rqty", rqty.getText().toString());
-                localHashMap.put("ram", ram.getText().toString());
-                localHashMap.put("rom", rom.getText().toString());
                 localHashMap.put("rqtyType", rqtyType.getText().toString());
-                localHashMap.put("image", new Gson().toJson(samplesList));
+                for(int i=0;i<samplesList.size();i++) {
+                    localHashMap.put("image[]", samplesList.get(i));
+                }
                 localHashMap.put("description", description.getText().toString());
-                localHashMap.put("stock_update", stock_update.getText().toString());
+                localHashMap.put("stock_status", stock_update.getText().toString());
 
                 return localHashMap;
             }
@@ -279,6 +261,7 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
         super.onPause();
         hideDialog();
     }
+
     private void getAllCategories() {
         String tag_string_req = "req_register";
         StringRequest strReq = new StringRequest(Request.Method.GET,
@@ -292,8 +275,11 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
                     if (success == 1) {
                         JSONArray jsonArray = jObj.getJSONArray("data");
                         CATEGORY = new String[jsonArray.length()];
+                        idCatMap=new HashMap<>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             CATEGORY[i] = jsonArray.getJSONObject(i).getString("title");
+                            idCatMap.put(jsonArray.getJSONObject(i).getString("title"),
+                                    jsonArray.getJSONObject(i).getString("id"));
                         }
                         ArrayAdapter<String> titleAdapter = new ArrayAdapter<String>(ProductRegister.this,
                                 android.R.layout.simple_dropdown_item_1line, CATEGORY);
@@ -316,9 +302,11 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
         strReq.setRetryPolicy(Appconfig.getPolicy());
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         imageutils.request_permission_result(requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -330,9 +318,29 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
         new UploadFileToServer().execute(Appconfig.compressImage(imageutils.getPath(uri)));
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        imageutils.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onImageClick(int position) {
+        Intent localIntent = new Intent(ProductRegister.this, ActivityMediaOnline.class);
+        localIntent.putExtra("filePath", samplesList.get(position));
+        localIntent.putExtra("isImage", true);
+        startActivity(localIntent);
+    }
+
+    @Override
+    public void onDeleteClick(int position) {
+        samplesList.remove(position);
+        maddImageAdapter.notifyData(samplesList);
+    }
+
     private class UploadFileToServer extends AsyncTask<String, Integer, String> {
-        String filepath;
         public long totalSize = 0;
+        String filepath;
 
         @Override
         protected void onPreExecute() {
@@ -344,7 +352,7 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
 
         @Override
         protected void onProgressUpdate(Integer... progress) {
-            pDialog.setMessage("Uploading..." + (String.valueOf(progress[0])));
+            pDialog.setMessage("Uploading..." + (progress[0]));
         }
 
         @Override
@@ -405,7 +413,7 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
         protected void onPostExecute(String result) {
             Log.e("Response from server: ", result);
             try {
-                JSONObject jsonObject = new JSONObject(result.toString());
+                JSONObject jsonObject = new JSONObject(result);
                 if (!jsonObject.getBoolean("error")) {
                     imageUrl = Appconfig.ip + "/images/" + imageutils.getfilename_from_path(filepath);
                     samplesList.add(imageUrl);
@@ -426,74 +434,6 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
             super.onPostExecute(result);
         }
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        imageutils.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void sendNotification(String title, String description, final String token) {
-        String tag_string_req = "req_register";
-        showDialog();
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("to", "/topics/allDevices");
-            jsonObject.put("priority", "high");
-            JSONObject dataObject = new JSONObject();
-            dataObject.put("title", title);
-            dataObject.put("message", description);
-            jsonObject.put("data", dataObject);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JsonObjectRequest strReq = new JsonObjectRequest(Request.Method.POST,
-                "https://fcm.googleapis.com/fcm/send", jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d("Register Response: ", response.toString());
-                hideDialog();
-                finish();
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                finish();
-                hideDialog();
-            }
-        }) {
-            protected Map<String, String> getParams() {
-                HashMap localHashMap = new HashMap();
-                return localHashMap;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap hashMap = new HashMap();
-                hashMap.put("Content-Type", "application/json");
-                hashMap.put("Authorization", token);
-                return hashMap;
-            }
-        };
-
-        strReq.setRetryPolicy(Appconfig.getPolicy());
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-    }
-
-
-    @Override
-    public void onImageClick(int position) {
-        Intent localIntent = new Intent(ProductRegister.this, ActivityMediaOnline.class);
-        localIntent.putExtra("filePath", samplesList.get(position));
-        localIntent.putExtra("isImage", true);
-        startActivity(localIntent);
-    }
-
-    @Override
-    public void onDeleteClick(int position) {
-        samplesList.remove(position);
-        maddImageAdapter.notifyData(samplesList);
     }
 
 }

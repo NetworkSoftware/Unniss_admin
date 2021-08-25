@@ -33,9 +33,9 @@ public class Appconfig {
     //Key values
     public static final String shopIdKey = "shopIdKey";
     public static final String mypreference = "mypref";
- //   public static final String ip = "http://thestockbazaar.com/admin/e-commerce/unniss";
+    public static final String ip = "http://thestockbazaar.com/prisma/unniss";
 
-    public static final String ip = "http://192.168.1.100:8113/prisma/unniss";
+//    public static final String ip = "http://192.168.1.101:8113/prisma/unniss";
 
     public static final String GET_ALL_ADDRESS = ip + "/get_all_address";
     public static final String FETCH_ADDRESS = ip + "/fetch_address";
@@ -273,7 +273,7 @@ public class Appconfig {
 
     public static DefaultRetryPolicy getPolicy() {
         return new DefaultRetryPolicy(
-                50000,
+                30000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
     }

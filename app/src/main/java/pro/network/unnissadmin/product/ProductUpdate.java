@@ -74,7 +74,7 @@ import static pro.network.unnissadmin.app.Appconfig.QTY_TYPE;
 public class ProductUpdate extends AppCompatActivity implements Imageutils.ImageAttachmentListener, ImageClick {
 
 
-    AutoCompleteTextView brand;
+    EditText brand;
     EditText model;
     EditText price;
     EditText ram;
@@ -91,7 +91,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
     MaterialBetterSpinner stock_update;
 
     private String[] STOCKUPDATE = new String[]{
-            "In Stock", "Currently Unavailable",
+            "instock", "outofstock",
     };
     String studentId = null;
 
@@ -100,6 +100,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
     ImageView image_placeholder, image_wallpaper;
     CardView itemsAdd;
     private String imageUrl = "";
+    private Map<String, String> idCatMap = new HashMap<>();
 
 
     @Override
@@ -156,8 +157,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(ProductUpdate.this,
                         android.R.layout.simple_dropdown_item_1line, Appconfig.getSubCatFromCat(CATEGORY[position]));
-                brand.setAdapter(brandAdapter);
-                brand.setThreshold(1);
+
             }
         });
 
@@ -259,18 +259,17 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         }) {
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
-                localHashMap.put("category", category.getText().toString());
-                localHashMap.put("brand", brand.getText().toString());
-                localHashMap.put("model", model.getText().toString());
+                localHashMap.put("category", idCatMap.get(category.getText().toString()));
+                localHashMap.put("subcategory", brand.getText().toString());
+                localHashMap.put("name", model.getText().toString());
                 localHashMap.put("price", price.getText().toString());
-                localHashMap.put("ram", ram.getText().toString());
                 localHashMap.put("rqty", rqty.getText().toString());
                 localHashMap.put("rqtyType", rqtyType.getText().toString());
-                localHashMap.put("rom", rom.getText().toString());
-                localHashMap.put("stock_update", stock_update.getText().toString());
+                localHashMap.put("stock_status", stock_update.getText().toString());
                 localHashMap.put("id", studentId);
-                localHashMap.put("image", new Gson().toJson(samplesList));
-                localHashMap.put("description", description.getText().toString());
+                for(int i=0;i<samplesList.size();i++) {
+                    localHashMap.put("image[]", samplesList.get(i));
+                }  localHashMap.put("description", description.getText().toString());
                 return localHashMap;
             }
         };
@@ -290,8 +289,11 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                     if (success == 1) {
                         JSONArray jsonArray = jObj.getJSONArray("data");
                         CATEGORY = new String[jsonArray.length()];
+                        idCatMap=new HashMap<>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             CATEGORY[i] = jsonArray.getJSONObject(i).getString("title");
+                            idCatMap.put(jsonArray.getJSONObject(i).getString("title"),
+                                    jsonArray.getJSONObject(i).getString("id"));
                         }
                         ArrayAdapter<String> titleAdapter = new ArrayAdapter<String>(ProductUpdate.this,
                                 android.R.layout.simple_dropdown_item_1line, CATEGORY);

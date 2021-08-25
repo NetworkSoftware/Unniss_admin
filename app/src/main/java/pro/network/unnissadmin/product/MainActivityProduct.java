@@ -110,18 +110,17 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             Product product = new Product();
                             product.setId(jsonObject.getString("id"));
-                            product.setBrand(jsonObject.getString("brand"));
+                            product.setBrand(jsonObject.getString("subcategory"));
                             product.setCategory(jsonObject.getString("category"));
-                            product.setStock_update(jsonObject.getString("stock_update"));
+                            product.setCategoryId(jsonObject.getString("categoryId"));
+                            product.setStock_update(jsonObject.getString("stock_status"));
                             product.setDescription(jsonObject.getString("description"));
                             product.setPrice(jsonObject.getString("price"));
                             product.setRqtyType(jsonObject.getString("rqtyType"));
                             if(!jsonObject.isNull("rqty")){
                                 product.setRqty(jsonObject.getString("rqty"));
                             }
-                            product.setRam(jsonObject.getString("ram"));
-                            product.setRom(jsonObject.getString("rom"));
-                            product.setModel(jsonObject.getString("model"));
+                            product.setModel(jsonObject.getString("name"));
                             product.setImage(jsonObject.getString("image"));
                             contactList.add(product);
                         }
@@ -142,7 +141,6 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("Registration Error: ", error.getMessage());
                 Toast.makeText(getApplication(),
                         "Some Network Error.Try after some time", Toast.LENGTH_LONG).show();
             }

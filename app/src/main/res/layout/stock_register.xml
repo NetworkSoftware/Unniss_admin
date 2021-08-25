@@ -86,7 +86,7 @@
                         android:layout_margin="5dp"
                         android:layout_weight="1">
 
-                        <AutoCompleteTextView
+                        <EditText
                             android:id="@+id/brand"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -98,6 +98,8 @@
                             android:textSize="@dimen/textsize" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
+
 
 
 
@@ -154,7 +156,7 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:hint="Select Type"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             android:textColor="@color/black"
                             android:textColorHint="#c6c6c6"
                             android:textSize="15dp"

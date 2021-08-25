@@ -22,6 +22,7 @@ public class Product implements Serializable {
     String stock_update;
     String userId;
     String rqtyType;
+    String categoryId;
 
     public Product() {
     }
@@ -158,5 +159,13 @@ public class Product implements Serializable {
 
     public void setStock_update(String stock_update) {
         this.stock_update = stock_update;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 }
