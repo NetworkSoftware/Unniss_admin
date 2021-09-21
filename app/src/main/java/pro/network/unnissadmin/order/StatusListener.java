@@ -10,5 +10,7 @@ public interface StatusListener {
     void onInvoice(Order id);
     void onProduct(Order id);
     void onWallet(Order order);
+    void onTrackId(Order order);
+    void onGOProduct(Order order);
 
 }

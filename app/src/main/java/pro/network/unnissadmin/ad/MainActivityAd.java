@@ -218,11 +218,12 @@ public class MainActivityAd extends AppCompatActivity implements Imageutils.Imag
 
     @Override
     public void image_attachment(int from, String filename, Bitmap file, Uri uri) {
-        String path = Environment.getExternalStorageDirectory() + File.separator + "ImageAttach" + File.separator;
-        imageutils.createImage(file, filename, path, false);
+        String path = getCacheDir().getPath() + File.separator + "ImageAttach" + File.separator;
+        File storedFile = imageutils.createImage(file, filename, path, false);
         progressDialog.setMessage("Uploading...");
         showDialog();
-        new UploadFileToServer().execute(Appconfig.compressImage(imageutils.getPath(uri)));
+        new UploadFileToServer().execute(Appconfig.compressImage(storedFile.getPath(),MainActivityAd.this));
+
     }
 
     @Override

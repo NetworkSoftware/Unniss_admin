@@ -57,7 +57,7 @@
         <activity
             android:name="pro.network.unnissadmin.NaviActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppThemeActionBar"/>
+            android:theme="@style/WhiteActionBar"/>
 
 
         <meta-data
@@ -110,7 +110,7 @@
         <activity
             android:name="pro.network.unnissadmin.product.ProductRegister"
             android:label="Stock Register"
-            android:theme="@style/AppThemeWhite" />
+            android:theme="@style/AppThemeActionBar" />
         <activity
             android:name="pro.network.unnissadmin.banner.BannerRegister"
             android:label="Banner Upload"
@@ -118,7 +118,7 @@
         <activity
             android:name="pro.network.unnissadmin.product.ProductUpdate"
             android:label="Stock Update"
-            android:theme="@style/AppThemeWhite" />
+            android:theme="@style/AppThemeActionBar" />
         <activity
             android:name="pro.network.unnissadmin.categories.CategoriesRegister"
             android:label="categories Register"
@@ -134,13 +134,29 @@
             android:theme="@style/AppThemeActionBar" />
         <activity
             android:name="pro.network.unnissadmin.order.SingleOrderPage"
-            android:label="single product"
-            android:theme="@style/AppThemeActionBar" />
+            android:label="Order Details"
+            android:theme="@style/AppThemeActionBarWhite" />
         <activity
             android:name="pro.network.unnissadmin.categories.MainActivityCategories"
             android:label="categories Main"
             android:theme="@style/AppThemeSe.NoActionBar" />
+        <activity
+            android:name="pro.network.unnissadmin.coupon.MainActivityCoupon"
+            android:label="Coupon Main"
+            android:theme="@style/AppThemeSe.NoActionBar" />
+        <activity
+            android:name="pro.network.unnissadmin.coupon.CouponRegister"
+            android:label="Coupon Register"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Push_Notification"
+            android:label="Notification"
+            android:theme="@style/AppThemeActionBar" />
 
+        <activity
+            android:name="pro.network.unnissadmin.coupon.CouponUpdate"
+            android:label="Coupon Update"
+            android:theme="@style/AppTheme" />
         <activity
             android:name="pro.network.unnissadmin.pincode.PincodeRegister"
             android:label="categories Main"

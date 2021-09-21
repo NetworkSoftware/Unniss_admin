@@ -23,6 +23,22 @@ public class Product implements Serializable {
     String userId;
     String rqtyType;
     String categoryId;
+    String fabric;
+    String ideal;
+    String occasion;
+    String fit;
+    String color;
+    String size;
+    String closure;
+    String pocket;
+    String pattern;
+    String rise;
+    String origin;
+    String bestselling;
+    String pricedrop;
+    String variation;
+    String delete_size;
+    String variationId;
 
     public Product() {
     }
@@ -35,7 +51,18 @@ public class Product implements Serializable {
         this.userId = userId;
     }
 
-    public Product(String brand, String model, String price,String rqty,String rqtyType, String ram, String rom, String name, String image, String description, String category) {
+    public Product(String brand, String model, String price,String rqty,String rqtyType, String ram, String rom, String name, String image, String description, String fabric,String ideal,
+            String occasion,
+            String fit,
+            String color,
+            String sizes,
+            String closure,
+            String pocket,
+            String pattern,
+            String rise,
+            String origin,
+                   String bestselling,
+                   String pricedrop,String category,  String variation,String delete_size,String variationId) {
         this.brand = brand;
         this.model = model;
         this.price = price;
@@ -45,8 +72,24 @@ public class Product implements Serializable {
         this.rom = rom;
         this.name = name;
         this.image = image;
-        this.description = description;
+        this.fabric = fabric;
+        this.ideal = ideal;
+        this.occasion = occasion;
+        this.fit = fit;
+        this.color = color;
+        this.size = sizes;
+        this.closure = closure;
+        this.pocket = pocket;
+        this.pattern = pattern;
+        this.rise = rise;
+        this.origin = origin;
+        this.origin = bestselling;
+        this.origin = pricedrop;
         this.category = category;
+        this.variation = variation;
+        this.delete_size = delete_size;
+        this.variationId = variationId;
+
     }
 
     public String getId() {
@@ -167,5 +210,133 @@ public class Product implements Serializable {
 
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getFabric() {
+        return fabric;
+    }
+
+    public void setFabric(String fabric) {
+        this.fabric = fabric;
+    }
+
+    public String getIdeal() {
+        return ideal;
+    }
+
+    public void setIdeal(String ideal) {
+        this.ideal = ideal;
+    }
+
+    public String getOccasion() {
+        return occasion;
+    }
+
+    public void setOccasion(String occasion) {
+        this.occasion = occasion;
+    }
+
+    public String getFit() {
+        return fit;
+    }
+
+    public void setFit(String fit) {
+        this.fit = fit;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getClosure() {
+        return closure;
+    }
+
+    public void setClosure(String closure) {
+        this.closure = closure;
+    }
+
+    public String getPocket() {
+        return pocket;
+    }
+
+    public void setPocket(String pocket) {
+        this.pocket = pocket;
+    }
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
+
+    public String getRise() {
+        return rise;
+    }
+
+    public void setRise(String rise) {
+        this.rise = rise;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public String getBestselling() {
+        return bestselling;
+    }
+
+    public void setBestselling(String bestselling) {
+        this.bestselling = bestselling;
+    }
+
+    public String getPricedrop() {
+        return pricedrop;
+    }
+
+    public void setPricedrop(String pricedrop) {
+        this.pricedrop = pricedrop;
+    }
+
+    public String getVariation() {
+        return variation;
+    }
+
+    public void setVariation(String variation) {
+        this.variation = variation;
+    }
+
+    public String getDelete_size() {
+        return delete_size;
+    }
+
+    public void setDelete_size(String delete_size) {
+        this.delete_size = delete_size;
+    }
+
+    public String getVariationId() {
+        return variationId;
+    }
+
+    public void setVariationId(String variationId) {
+        this.variationId = variationId;
     }
 }

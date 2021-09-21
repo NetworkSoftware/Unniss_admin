@@ -21,10 +21,11 @@ public class Order implements Serializable {
     String phone;
     String address;
     String reson;
+    String trackId;
     ArrayList<Product> productBeans;
     String createdOn;
     String addressOrg,comments,payment,paymentId,delivery,deliveryTime,grandCost,shipCost;
-    String amount,toPincode,createdon,totalAmt;
+    String amount,toPincode,createdon,totalAmt,rqty,rqtyType,size,image,payment_method_title,couponCost,variationId;
 
     public Order() {
     }
@@ -240,5 +241,69 @@ public class Order implements Serializable {
 
     public void setTotalAmt(String totalAmt) {
         this.totalAmt = totalAmt;
+    }
+
+    public String getRqty() {
+        return rqty;
+    }
+
+    public void setRqty(String rqty) {
+        this.rqty = rqty;
+    }
+
+    public String getRqtyType() {
+        return rqtyType;
+    }
+
+    public void setRqtyType(String rqtyType) {
+        this.rqtyType = rqtyType;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getTrackId() {
+        return trackId;
+    }
+
+    public void setTrackId(String trackId) {
+        this.trackId = trackId;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getPayment_method_title() {
+        return payment_method_title;
+    }
+
+    public void setPayment_method_title(String payment_method_title) {
+        this.payment_method_title = payment_method_title;
+    }
+
+    public String getCouponCost() {
+        return couponCost;
+    }
+
+    public void setCouponCost(String couponCost) {
+        this.couponCost = couponCost;
+    }
+
+    public String getVariationId() {
+        return variationId;
+    }
+
+    public void setVariationId(String variationId) {
+        this.variationId = variationId;
     }
 }

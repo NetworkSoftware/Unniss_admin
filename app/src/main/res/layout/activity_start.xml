@@ -58,6 +58,7 @@
         android:layout_height="wrap_content"
         app:cornerRadius="5dp"
         app:strokeWidth="1dp"
+        android:backgroundTint="@color/white"
         app:strokeColor="@color/black"
         android:textColor="@color/black"
         android:layout_marginTop="30dp"

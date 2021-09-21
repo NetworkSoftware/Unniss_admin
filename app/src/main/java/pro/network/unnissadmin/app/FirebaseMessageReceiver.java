@@ -51,7 +51,7 @@ public class FirebaseMessageReceiver extends FirebaseMessagingService {
     public void showNotification(String title, String message) {
         Intent intent = new Intent(this, MainActivityOrder.class);
         if(message.toLowerCase().contains("ordered")) {
-            intent.putExtra("status", "ordered");
+            intent.putExtra("status", "processing");
         }else if(message.toLowerCase().contains("returned")) {
             intent.putExtra("status", "Returned");
         }

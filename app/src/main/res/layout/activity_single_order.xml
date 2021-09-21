@@ -13,8 +13,155 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="20dp"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sans"
+                    android:gravity="left"
+                    android:text="Order Id : "
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/id"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sans"
+                    android:gravity="left"
+                    android:text="Rs. 856.85"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sans"
+                    android:gravity="left"
+                    android:text="Tracking Id : "
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/track_Id"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sans"
+                    android:gravity="left"
+                    android:text="Rs. 856.85"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sans"
+                    android:gravity="left"
+                    android:text="Name : "
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sans"
+                    android:gravity="left"
+                    android:text="Rs. 856.85"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sans"
+                    android:gravity="left"
+                    android:text="Phone : "
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sans"
+                    android:gravity="left"
+                    android:text="Rs. 856.85"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sans"
+                    android:gravity="left"
+                    android:text="Quantity : "
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/quantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sans"
+                    android:gravity="left"
+                    android:text="Rs. 856.85"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -258,7 +405,64 @@
                     android:textColor="@color/black"
                     android:textSize="18dp" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sans"
+                    android:gravity="left"
+                    android:text="Pincode : "
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/toPincode"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sans"
+                    android:gravity="left"
+                    android:text="Rs. 856.85"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sans"
+                    android:gravity="left"
+                    android:text="Created on : "
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/createdon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sans"
+                    android:gravity="left"
+                    android:text="Rs. 856.85"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+            </LinearLayout>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/myorders_list"
                 android:layout_width="match_parent"
@@ -280,6 +484,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
+                        android:visibility="gone"
                         android:orientation="horizontal">
 
                         <TextView

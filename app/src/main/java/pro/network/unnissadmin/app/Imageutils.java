@@ -788,7 +788,7 @@ public class Imageutils
      */
 
 
-    public void createImage(Bitmap bitmap, String file_name, String filepath, boolean file_replace)
+    public File createImage(Bitmap bitmap, String file_name, String filepath, boolean file_replace)
     {
 
         path = new File(filepath);
@@ -814,7 +814,7 @@ public class Imageutils
         {
             store_image(file,bitmap);
         }
-
+        return file;
     }
 
 

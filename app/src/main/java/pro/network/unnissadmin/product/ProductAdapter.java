@@ -2,6 +2,8 @@ package pro.network.unnissadmin.product;
 
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +75,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final Product product = productListFiltered.get(position);
-        holder.name.setText(product.getBrand()+" "+product.getModel());
+        holder.name.setText((Html.fromHtml(product.getBrand()+product.getModel())));
         holder.price.setText("₹ "+product.getPrice());
         holder.stock_update.setText(product.getStock_update());
         holder.rqty.setText(product.getRqty());
@@ -87,10 +89,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                 .placeholder(R.drawable.mobile_phone)
                 .into(holder.thumbnail);
 */
+
         ArrayList<String> urls = new Gson().fromJson(product.image, (Type) List.class);
 //if(urls.size()>0){
         Picasso.with(context)
-                .load(Appconfig.getResizedImage(urls.get(0), true))
+                .load(urls.get(0))
                 .into(holder.thumbnail);
 //}
     }

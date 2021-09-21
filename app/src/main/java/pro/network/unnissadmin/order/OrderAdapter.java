@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,11 +28,11 @@ import pro.network.unnissadmin.app.Appconfig;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder>
         implements Filterable {
-    StatusListener statusListener;
     private final Context context;
+    private final ContactsAdapterListener listener;
+    StatusListener statusListener;
     private List<Order> orderList;
     private List<Order> orderListFiltered;
-    private final ContactsAdapterListener listener;
 
     public OrderAdapter(Context context, List<Order> orderList, ContactsAdapterListener listener, StatusListener statusListener) {
         this.context = context;
@@ -60,25 +61,30 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         holder.name.setText(order.getName());
         holder.address.setText(order.getAddress());
         holder.reason.setText(order.getReson());
-       holder.cashback.setText(order.getCashback());
+        holder.track_Id.setText(order.getTrackId());
+        holder.cashback.setText(order.getCashback());
         holder.orderedOn.setText(Appconfig.convertTimeToLocal(order.createdon));
-        if (order.getStatus().equalsIgnoreCase("ordered")) {
+        if (order.getStatus().equalsIgnoreCase("processing")) {
             holder.deliveredBtn.setVisibility(View.VISIBLE);
-            holder.wallet.setVisibility(View.VISIBLE);
+            holder.wallet.setVisibility(View.GONE);
         } else {
             holder.deliveredBtn.setVisibility(View.GONE);
             holder.wallet.setVisibility(View.GONE);
 
         }
+        holder.trackinglay.setVisibility(View.VISIBLE);
+        if (order.getTrackId().equalsIgnoreCase("0")) {
+            holder.trackinglay.setVisibility(View.GONE);
+        }
 
-        if (!order.getStatus().equalsIgnoreCase("canceled")
-                && order.getStatus().equalsIgnoreCase("ordered")) {
+        if (!order.getStatus().equalsIgnoreCase("cancelled")
+                && order.getStatus().equalsIgnoreCase("processing")) {
             holder.cancalOrder.setVisibility(View.VISIBLE);
         } else {
             holder.cancalOrder.setVisibility(View.GONE);
         }
 
-        OrderListSubAdapter OrderListAdapter = new OrderListSubAdapter(context, order.productBeans);
+        OrderListProAdapter OrderListAdapter = new OrderListProAdapter(context, order.productBeans);
         final LinearLayoutManager addManager1 = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         holder.cart_sub_list.setLayoutManager(addManager1);
         holder.cart_sub_list.setAdapter(OrderListAdapter);
@@ -108,7 +114,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             }
         });
 
-        holder.single_order.setOnClickListener(new View.OnClickListener() {
+        holder.cart_sub_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 statusListener.onProduct(order);
@@ -118,6 +124,18 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             @Override
             public void onClick(View view) {
                 statusListener.onWallet(order);
+            }
+        });
+        holder.trackId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                statusListener.onTrackId(order);
+            }
+        });
+        holder.card_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                statusListener.onGOProduct(order);
             }
         });
     }
@@ -177,18 +195,18 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, price, cashback,cashbackTxt,
+        public TextView name, price, cashback, track_Id,
                 status, quantity, phone, orderedOn, address, reason, order_id;
         public ImageView thumbnail;
         public RecyclerView cart_sub_list;
-        MaterialButton deliveredBtn, whatsapp, call, cancalOrder, wallet;
-        LinearLayout single_order;
+        MaterialButton deliveredBtn, whatsapp, call, cancalOrder, wallet, trackId;
+        LinearLayout  trackinglay;
+        CardView card_order;
 
         public MyViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.name);
             orderedOn = view.findViewById(R.id.orderedOn);
-            single_order = view.findViewById(R.id.single_order);
             price = view.findViewById(R.id.price);
             name = view.findViewById(R.id.name);
             phone = view.findViewById(R.id.phone);
@@ -205,7 +223,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             order_id = view.findViewById(R.id.order_id);
             wallet = view.findViewById(R.id.wallet);
             cashback = view.findViewById(R.id.cashback);
-          //  cashbackTxt = view.findViewById(R.id.cashbackTxt);
+            trackId = view.findViewById(R.id.trackId);
+            track_Id = view.findViewById(R.id.track_Id);
+            trackinglay = view.findViewById(R.id.trackinglay);
+            //  cashbackTxt = view.findViewById(R.id.cashbackTxt);
+            card_order = view.findViewById(R.id.card_order);
         }
     }
 }

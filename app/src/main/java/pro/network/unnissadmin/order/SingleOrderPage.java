@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,27 +47,30 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import pro.network.unnissadmin.NaviActivity;
 import pro.network.unnissadmin.R;
 import pro.network.unnissadmin.app.AppController;
 import pro.network.unnissadmin.app.Appconfig;
 import pro.network.unnissadmin.app.HeaderFooterPageEvent;
 import pro.network.unnissadmin.app.PdfConfig;
+import pro.network.unnissadmin.categories.MainActivityCategories;
 import pro.network.unnissadmin.product.Product;
 
 import static pro.network.unnissadmin.app.Appconfig.FETCH_ADDRESS;
 import static pro.network.unnissadmin.app.Appconfig.decimalFormat;
 
-public class SingleOrderPage extends AppCompatActivity implements StatusListener , OrderAdapter.ContactsAdapterListener {
+public class SingleOrderPage extends AppCompatActivity implements  OrderAdapter.ContactsAdapterListener {
 
     RecyclerView myorders_list;
-    OrderAdapter myOrderListAdapter;
+    OrderListSubAdapter myOrderListAdapter;
     SharedPreferences sharedpreferences;
     TextView address;
     TextView delivery;
     TextView payment;
     TextView grandtotal;
-    TextView shippingTotal;
-    TextView subtotal, status, paymentId, deliveryTime, comments;
+    ImageView back;
+    TextView shippingTotal,orderId,name,phone,quantity,pincode,createdon;
+    TextView subtotal, status, paymentId, deliveryTime, comments,track_Id;
     ProgressDialog pDialog;
     LinkedHashMap<String, String> stringStringMap = new LinkedHashMap<>();
     private ArrayList<Product> myorderBeans = new ArrayList<>();
@@ -79,17 +85,19 @@ public class SingleOrderPage extends AppCompatActivity implements StatusListener
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_order);
-
+        Drawable backArrow = getResources().getDrawable(R.drawable.ic_round_arrow_back_24);
+        backArrow.setColorFilter(getResources().getColor(R.color.black), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(backArrow);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("My Orders");
 
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
         sharedpreferences = getSharedPreferences(Appconfig.mypreference, Context.MODE_PRIVATE);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_round_arrow_back_24);
-        getSupportActionBar().setTitle("My Orders");
 
         myorders_list = findViewById(R.id.myorders_list);
-        myOrderListAdapter = new OrderAdapter(SingleOrderPage.this,order,this,this);
+        myOrderListAdapter = new OrderListSubAdapter(SingleOrderPage.this,myorderBeans);
         final LinearLayoutManager addManager1 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         myorders_list.setLayoutManager(addManager1);
         myorders_list.setAdapter(myOrderListAdapter);
@@ -105,7 +113,14 @@ public class SingleOrderPage extends AppCompatActivity implements StatusListener
         paymentId = findViewById(R.id.paymentId);
         comments = findViewById(R.id.comments);
         deliveryTime = findViewById(R.id.deliveryTime);
+        track_Id = findViewById(R.id.track_Id);
 
+        orderId = findViewById(R.id.id);
+        name = findViewById(R.id.name);
+        phone = findViewById(R.id.phone);
+        pincode = findViewById(R.id.toPincode);
+        quantity = findViewById(R.id.quantity);
+        createdon = findViewById(R.id.createdon);
         invoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,17 +141,31 @@ public class SingleOrderPage extends AppCompatActivity implements StatusListener
             myorderBean = (Order) getIntent().getSerializableExtra("data");
             address.setText(myorderBean.address);
             stringStringMap.put("Order Id",  "SCF" + myorderBean.getId());
+            orderId.setText( myorderBean.id);
             stringStringMap.put("Address", myorderBean.address);
             status.setText(myorderBean.status);
             stringStringMap.put("Status", myorderBean.status);
             delivery.setText(myorderBean.delivery);
+
+            stringStringMap.put("name", myorderBean.name);
+            name.setText(myorderBean.name);
+            stringStringMap.put("phone", myorderBean.phone);
+            phone.setText(myorderBean.phone);
+            stringStringMap.put("toPincode", myorderBean.toPincode);
+            pincode.setText(myorderBean.toPincode);
+            stringStringMap.put("quantity", myorderBean.quantity);
+            quantity.setText(myorderBean.quantity);
+            stringStringMap.put("createdon", myorderBean.createdon);
+            createdon.setText(myorderBean.createdon);
             stringStringMap.put("Delivery", myorderBean.delivery);
             payment.setText(myorderBean.payment);
             stringStringMap.put("Payment mode", myorderBean.payment);
             paymentId.setText(myorderBean.paymentId);
             stringStringMap.put("Payment ID", myorderBean.paymentId);
             comments.setText(myorderBean.comments);
-            stringStringMap.put("Comments", myorderBean.comments);
+            stringStringMap.put("comments", myorderBean.comments);
+            track_Id.setText(myorderBean.trackId);
+            stringStringMap.put("trackId", myorderBean.trackId);
             comments.setVisibility(View.VISIBLE);
             if(myorderBean.comments.equalsIgnoreCase("NA")){
                 comments.setVisibility(View.GONE);
@@ -169,11 +198,13 @@ public class SingleOrderPage extends AppCompatActivity implements StatusListener
                 }
             }
             stringStringMap.put("Grand total", myorderBean.grandCost);
-            shippingTotal.setText(myorderBean.shipCost);
+            shippingTotal.setText( "₹" +myorderBean.shipCost);
             stringStringMap.put("Shipping total", myorderBean.shipCost);
-            subtotal.setText(myorderBean.price);
-            stringStringMap.put("Sub total", myorderBean.price);
-            myOrderListAdapter.notifyData(order);
+
+            subtotal.setText(  "₹" + myorderBean.grandCost);
+            stringStringMap.put("Sub total", myorderBean.grandCost);
+
+            myOrderListAdapter.notifyData(myorderBeans);
 
             if (paymentId != null) {
                 paymentId.setText(myorderBean.getPaymentId());
@@ -184,16 +215,16 @@ public class SingleOrderPage extends AppCompatActivity implements StatusListener
                 }
             }
 
-            getSupportActionBar().setTitle("Order id:#" + (myorderBean.getId()));
+           // getSupportActionBar().setTitle("Order id:#" + (myorderBean.getId()));
 
-            fetchAddressById(myorderBean.address);
+            fetchAddressById(myorderBean.getAddress());
 
         } catch (Exception e) {
             Log.e("xxxxxxxxx", e.toString());
         }
 
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_round_arrow_back_24);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+     //   getySupportActionBar().setHomeAsUpIndicator(R.drawable.ic_round_arrow_back_24);
+    //    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -224,12 +255,12 @@ public class SingleOrderPage extends AppCompatActivity implements StatusListener
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onBackPressed() {
         if (getIntent().getStringExtra("from") != null &&
-                getIntent().getStringExtra("from").equalsIgnoreCase("payment")) {
+                getIntent().getStringExtra("from").equalsIgnoreCase("ordered")) {
           //  shopMore.callOnClick();
+            finish();
         } else {
             finish();
         }
@@ -238,7 +269,7 @@ public class SingleOrderPage extends AppCompatActivity implements StatusListener
     private void fetchAddressById(final String id) {
         String tag_string_req = "req_register_add";
         StringRequest strReq = new StringRequest(Request.Method.GET,
-                FETCH_ADDRESS, new Response.Listener<String>() {
+                FETCH_ADDRESS+"?id="+id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("Register Response: ", response);
@@ -255,7 +286,7 @@ public class SingleOrderPage extends AppCompatActivity implements StatusListener
                         stringBuilder1.append(jsonObject.getString("landmark")).append("\n");
                         stringBuilder1.append(jsonObject.getString("pincode"));
                         address.setText(stringBuilder.toString() + "\n" + stringBuilder1.toString());
-                        myorderBean.setAddressOrg(stringBuilder1.toString());
+                        myorderBean.setAddress(stringBuilder1.toString());
                         myorderBean.setName(jsonObject.getString("name"));
                         myorderBean.setPhone(jsonObject.getString("mobile"));
 
@@ -273,13 +304,7 @@ public class SingleOrderPage extends AppCompatActivity implements StatusListener
             public void onErrorResponse(VolleyError error) {
                 Log.e("Xxxxxxxxx", "Something went wrong");
             }
-        }) {
-            protected Map<String, String> getParams() {
-                HashMap localHashMap = new HashMap();
-                localHashMap.put("id", id);
-                return localHashMap;
-            }
-        };
+        });
         strReq.setRetryPolicy(Appconfig.getTimeOut());
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
@@ -352,41 +377,6 @@ public class SingleOrderPage extends AppCompatActivity implements StatusListener
                 Toast.makeText(SingleOrderPage.this, "Storage Permission Denied", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    @Override
-    public void onDeliveredClick(String id) {
-
-    }
-
-    @Override
-    public void onWhatsAppClick(String phone) {
-
-    }
-
-    @Override
-    public void onCallClick(String phone) {
-
-    }
-
-    @Override
-    public void onCancelClick(String id) {
-
-    }
-
-    @Override
-    public void onInvoice(Order id) {
-
-    }
-
-    @Override
-    public void onProduct(Order id) {
-
-    }
-
-    @Override
-    public void onWallet(Order id) {
-
     }
 
     @Override

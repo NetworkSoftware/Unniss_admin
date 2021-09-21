@@ -6,11 +6,11 @@
     android:layout_margin="5dp"
     android:backgroundTint="@color/white"
     android:elevation="10dp"
+    android:id="@+id/card_order"
     android:orientation="vertical"
     app:cardCornerRadius="5dp">
 
     <LinearLayout
-        android:id="@+id/single_order"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -88,6 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
+                    android:visibility="gone"
                     android:layout_marginLeft="5dp"
                     android:orientation="horizontal">
                     <TextView
@@ -257,11 +258,42 @@
                         android:gravity="left"
                         android:text="Rs.5000" />
                 </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/trackinglay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:visibility="gone"
+                    android:layout_marginLeft="5dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginRight="10dp"
+                        android:fontFamily="@font/sans_bold"
+                        android:gravity="left"
+                        android:layout_weight="1"
+                        android:text="Tracking ID"
+                        android:textColor="@android:color/black"
+                        android:textSize="12dp" />
+                    <TextView
+                        android:id="@+id/track_Id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="15dp"
+                        android:fontFamily="@font/sans_bold"
+                        android:gravity="left"
+                        android:text="Rs.5000" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
+                    android:visibility="gone"
                     android:layout_marginLeft="5dp"
                     android:orientation="horizontal">
                 <TextView
@@ -384,6 +416,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/sans_bold"
+                    android:visibility="gone"
                     app:cornerRadius="5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
@@ -391,6 +424,20 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="15dp"
                     app:iconTint="@color/colorPrimary" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/trackId"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/sans_bold"
+                    app:cornerRadius="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:text="Tracking Id"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15dp"
+                    app:iconTint="@color/colorPrimary" />
+
             </LinearLayout>
 
         </HorizontalScrollView>

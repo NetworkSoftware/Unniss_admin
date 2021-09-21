@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -65,10 +66,11 @@ import pro.network.unnissadmin.app.Appconfig;
 import pro.network.unnissadmin.app.HeaderFooterPageEvent;
 import pro.network.unnissadmin.app.PdfConfig;
 import pro.network.unnissadmin.product.Product;
+import pro.network.unnissadmin.product.ProductUpdate;
 
 import static pro.network.unnissadmin.app.Appconfig.ORDER_CHANGE_STATUS;
 import static pro.network.unnissadmin.app.Appconfig.ORDER_GET_ALL;
-import static pro.network.unnissadmin.app.Appconfig.UPDATE_WALLET;
+import static pro.network.unnissadmin.app.Appconfig.UPDATE_TRACKING_ID;
 
 public class MainActivityOrder extends AppCompatActivity implements OrderAdapter.ContactsAdapterListener, StatusListener {
     private static final String TAG = MainActivityOrder.class.getSimpleName();
@@ -76,6 +78,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
     Button loadMore;
     int offset = 0;
     LinkedHashMap<String, String> stringStringMap = new LinkedHashMap<>();
+    SharedPreferences sharedpreferences;
     private RecyclerView recyclerView;
     private List<Order> orderList;
     private OrderAdapter mAdapter;
@@ -83,7 +86,6 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
     private OrderAdapter deliverAdapter;
     private ArrayList<Order> deliveredList;
     private RecyclerView recycler_view_delivered;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
+        sharedpreferences = getApplicationContext().getSharedPreferences(Appconfig.mypreference, Context.MODE_PRIVATE);
 
         // toolbar fancy stuff
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -101,6 +104,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
 
         recyclerView = findViewById(R.id.recycler_view);
         orderList = new ArrayList<>();
+        mAdapter = new OrderAdapter(this, orderList, this, this);
         mAdapter = new OrderAdapter(this, orderList, this, this);
 
         recycler_view_delivered = findViewById(R.id.recycler_view_delivered);
@@ -135,7 +139,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
         progressDialog.setMessage("Processing ...");
         showDialog();
         StringRequest strReq = new StringRequest(Request.Method.GET,
-                ORDER_GET_ALL, new Response.Listener<String>() {
+                ORDER_GET_ALL + "?offset=" + (offset * 10) + "&status=" + getIntent().getStringExtra("status"), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("Register Response: ", response);
@@ -155,35 +159,49 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                                 Order order = new Order();
                                 order.setId(jsonObject.getString("id"));
-                                order.setPrice(jsonObject.getString("price"));
+                                order.setAmount(jsonObject.getString("price"));
                                 order.setQuantity(jsonObject.getString("quantity"));
                                 order.setStatus(jsonObject.getString("status"));
                                 order.setItems(jsonObject.getString("items"));
-                                order.setName(jsonObject.getString("name"));
-                                order.setPhone(jsonObject.getString("phone"));
-                                order.setAddress(jsonObject.getString("address"));
-                                order.setReson(jsonObject.getString("reason"));
-                                order.setAddressOrg(jsonObject.has("addressOrg") ?
-                                        jsonObject.getString("addressOrg") : "NA");
-                                order.setComments(jsonObject.has("comments") ?
-                                        jsonObject.getString("comments") : "NA");
-                                order.setPayment(jsonObject.getString("payment"));
-                                order.setPaymentId(jsonObject.getString("paymentId"));
+                                order.setRqtyType(jsonObject.has("rqtyType") ?
+                                        jsonObject.getString("rqtyType") : "NA");
+                                order.setPrice(jsonObject.has("product_price") ?
+                                        jsonObject.getString("product_price") : "NA");
                                 order.setToPincode(jsonObject.has("toPincode") ?
                                         jsonObject.getString("toPincode") : "NA");
                                 order.setDelivery(jsonObject.has("delivery") ?
                                         jsonObject.getString("delivery") : "NA");
+                                order.setPayment(jsonObject.has("payment") ?
+                                        jsonObject.getString("payment") : "NA");
+                                order.setGrandCost(jsonObject.has("grandCost") ?
+                                        jsonObject.getString("grandCost") : "NA");
+                                order.setShipCost(jsonObject.has("shipCost") ?
+                                        jsonObject.getString("shipCost") : "NA");
+                                order.setPayment_method_title(jsonObject.getString("payment_method_title"));
+                                order.setAddress(jsonObject.getString("address"));
+                                order.setPaymentId(jsonObject.has("paymentId") ?
+                                        jsonObject.getString("paymentId") : "NA");
+                                order.setComments(jsonObject.has("comments") ?
+                                        jsonObject.getString("comments") : "NA");
                                 order.setDeliveryTime(jsonObject.has("deliveryTime") ?
                                         jsonObject.getString("deliveryTime") : "NA");
-                                order.setGrandCost(jsonObject.getString("grandCost"));
-                                order.setShipCost(jsonObject.getString("shipCost"));
-                                order.setAmount(jsonObject.has("amount") ?
-                                        jsonObject.getString("amount") : "NA");
+                                order.setName(jsonObject.has("name") ?
+                                        jsonObject.getString("name") : "NA");
+                                order.setPhone(jsonObject.has("phone") ?
+                                        jsonObject.getString("phone") : "NA");
+                                order.setSize(jsonObject.has("size") ?
+                                        jsonObject.getString("size") : "NA");
+                                order.setAddressOrg(jsonObject.has("addressOrg") ?
+                                        jsonObject.getString("addressOrg") : "NA");
+                                order.setCouponCost(jsonObject.has("coupon") ?
+                                        jsonObject.getString("coupon") : "NA");
+                                order.setCouponCost(jsonObject.has("couponCost") ?
+                                        jsonObject.getString("couponCost") : "NA");
+                                order.setTrackId(jsonObject.has("trackId") ?
+                                        jsonObject.getString("trackId") : "NA");
+                                order.setVariationId(jsonObject.has("variationId") ?
+                                        jsonObject.getString("variationId") : "NA");
                                 order.setCreatedon(jsonObject.getString("createdon"));
-                                order.setUser(jsonObject.getString("user"));
-                                order.setCashback(jsonObject.getString("cashback"));
-                                order.setTotalAmt(jsonObject.has("totalAmt") ?
-                                        jsonObject.getString("totalAmt") : "NA");
 
                                 ObjectMapper mapper = new ObjectMapper();
                                 Object listBeans = new Gson().fromJson(jsonObject.getString("items"),
@@ -194,7 +212,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                                         }
                                 );
                                 order.setProductBeans(accountList);
-                                if (order.getStatus().equalsIgnoreCase("ordered")) {
+                                if (order.getStatus().equalsIgnoreCase("processing")) {
                                     orderList.add(order);
                                 } else {
                                     deliveredList.add(order);
@@ -222,7 +240,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
             @Override
             public void onErrorResponse(VolleyError error) {
                 hideDialog();
-                // Log.e("Registration Error: ", error.getMessage());
+                Log.e("Registration Error: ", error.getMessage());
                 Toast.makeText(getApplication(),
                         "Some Network Error.Try after some time", Toast.LENGTH_LONG).show();
             }
@@ -328,7 +346,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
 
     @Override
     public void onDeliveredClick(String id) {
-        statusChange(id, "Delivered", "Delivered by admin");
+        statusChange(id, "completed", "Delivered by admin");
     }
 
     @Override
@@ -372,7 +390,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (reason.getText().toString().length() > 0) {
-                            statusChange(id, "canceled", reason.getText().toString());
+                            statusChange(id, "cancelled", reason.getText().toString());
                             dialog.cancel();
                         } else {
                             Toast.makeText(getApplicationContext(), "Enter valid reason", Toast.LENGTH_SHORT).show();
@@ -398,7 +416,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
 
     @Override
     public void onProduct(Order order) {
-        getToOrderPage(order);
+        //
     }
 
     @Override
@@ -406,6 +424,61 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
         showCashBack(order);
     }
 
+    @Override
+    public void onTrackId(Order order) {
+        showTrackingId(order);
+    }
+
+    @Override
+    public void onGOProduct(Order order) {
+       /* Intent intent = new Intent(MainActivityOrder.this, ProductUpdate.class);
+        intent.putExtra("data", order);
+        startActivity(intent);*/
+        getToOrderPage(order);
+    }
+
+    private void showTrackingId(Order order) {
+        final RoundedBottomSheetDialog mBottomSheetDialog = new RoundedBottomSheetDialog(MainActivityOrder.this);
+        LayoutInflater inflater = MainActivityOrder.this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.bottom_amount_layout, null);
+
+        TextInputLayout reviewTxt = dialogView.findViewById(R.id.walletTxt);
+        TextInputEditText walletEdit = dialogView.findViewById(R.id.wallet);
+
+        final Button submit = dialogView.findViewById(R.id.submit);
+        final TextView title = dialogView.findViewById(R.id.title);
+        title.setText("Update Tracking Id");
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (walletEdit.getText().toString().length() <= 0) {
+                    Toast.makeText(MainActivityOrder.this, "Enter Valid Tracking Id", Toast.LENGTH_LONG).show();
+                    return;
+                } else {
+                    updateWallet(order.getId(), walletEdit.getText().toString(), mBottomSheetDialog);
+                }
+            }
+        });
+        mBottomSheetDialog.setContentView(dialogView);
+        walletEdit.requestFocus();
+        mBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        mBottomSheetDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        RoundedBottomSheetDialog d = (RoundedBottomSheetDialog) dialog;
+                        FrameLayout bottomSheet = d.findViewById(R.id.design_bottom_sheet);
+                        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                }, 0);
+            }
+        });
+        mBottomSheetDialog.show();
+    }
 
     private void getToOrderPage(Order orderId) {
         Intent intent = new Intent(MainActivityOrder.this, SingleOrderPage.class);
@@ -530,7 +603,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                     Toast.makeText(MainActivityOrder.this, "Enter Valid Cashback", Toast.LENGTH_LONG).show();
                     return;
                 } else {
-                    updateWallet(order.getUser(), walletEdit.getText().toString(), order.id, mBottomSheetDialog);
+                    updateWallet(order.getUser(), walletEdit.getText().toString(), mBottomSheetDialog);
                 }
             }
         });
@@ -555,11 +628,11 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
     }
 
 
-    private void updateWallet(final String userId, final String wallet, final String orderId, RoundedBottomSheetDialog mBottomSheetDialog) {
+    private void updateWallet(final String userId, final String trackingId, RoundedBottomSheetDialog mBottomSheetDialog) {
         String tag_string_req = "req_register";
         showDialog();
         StringRequest strReq = new StringRequest(Request.Method.PUT,
-                UPDATE_WALLET, new Response.Listener<String>() {
+                UPDATE_TRACKING_ID, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 hideDialog();
@@ -567,8 +640,8 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                 try {
                     JSONObject jObj = new JSONObject(response);
                     Toast.makeText(getApplication(), jObj.getString("message"), Toast.LENGTH_SHORT).show();
-                    int success = jObj.getInt("success");
-                    if (success == 1) {
+                    boolean success = jObj.getBoolean("success");
+                    if (success == true) {
                         if (mBottomSheetDialog != null) {
                             mBottomSheetDialog.cancel();
                         }
@@ -593,9 +666,8 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
         }) {
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
-                localHashMap.put("userId", userId);
-                localHashMap.put("amt", wallet);
-                localHashMap.put("orderId", orderId);
+                localHashMap.put("id", userId);
+                localHashMap.put("trackId", trackingId);
                 return localHashMap;
             }
         };

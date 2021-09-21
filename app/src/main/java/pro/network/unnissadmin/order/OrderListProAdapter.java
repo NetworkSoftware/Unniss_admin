@@ -1,16 +1,17 @@
 package pro.network.unnissadmin.order;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.gson.Gson;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -18,14 +19,16 @@ import java.util.ArrayList;
 import pro.network.unnissadmin.R;
 import pro.network.unnissadmin.app.Appconfig;
 import pro.network.unnissadmin.product.Product;
+import pro.network.unnissadmin.product.ProductUpdate;
 
 import static pro.network.unnissadmin.app.Appconfig.decimalFormat;
 
 
-public class OrderListSubAdapter extends RecyclerView.Adapter<OrderListSubAdapter.MyViewHolder> {
+public class OrderListProAdapter extends RecyclerView.Adapter<OrderListProAdapter.MyViewHolder> {
 
     private Context mainActivityUser;
     private ArrayList<Product> myorderBeans;
+    SharedPreferences preferences;
     int selectedPosition = 0;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -33,19 +36,21 @@ public class OrderListSubAdapter extends RecyclerView.Adapter<OrderListSubAdapte
         private final TextView title;
         private final TextView subtitle;
         private  final ImageView product_image;
+        LinearLayout items;
 
 
         public MyViewHolder(View view) {
             super((view));
-            title = view.findViewById(R.id.title_one);
-            subtitle = view.findViewById(R.id.title_two);
+            title = view.findViewById(R.id.title);
+            subtitle = view.findViewById(R.id.subtitle);
             product_image = view.findViewById(R.id.product_image);
+            items = view.findViewById(R.id.items);
 
 
         }
     }
 
-    public OrderListSubAdapter(Context mainActivityUser, ArrayList<Product> myorderBeans) {
+    public OrderListProAdapter(Context mainActivityUser, ArrayList<Product> myorderBeans) {
         this.mainActivityUser = mainActivityUser;
         this.myorderBeans = myorderBeans;
     }
@@ -60,11 +65,11 @@ public class OrderListSubAdapter extends RecyclerView.Adapter<OrderListSubAdapte
         notifyDataSetChanged();
     }
 
-    public OrderListSubAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public OrderListProAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.myorders_list_sub, parent, false);
+                .inflate(R.layout.single_order_item, parent, false);
 
-        return new OrderListSubAdapter.MyViewHolder(itemView);
+        return new OrderListProAdapter.MyViewHolder(itemView);
     }
 
     @Override
@@ -90,7 +95,18 @@ public class OrderListSubAdapter extends RecyclerView.Adapter<OrderListSubAdapte
         float startValue = Float.parseFloat(myorderBean.getPrice()) * Float.parseFloat(qty);
         holder.subtitle.setText(myorderBean.getQty() + "*" + myorderBean.getPrice() + "/" +
                 myorderBean.getRqty() + " " + myorderBean.getRqtyType() +
-                "=" + "₹" + decimalFormat.format(startValue) + ".00"+"\nSize :"+myorderBean.getSize());
+                "\nTotal Amt = " + "₹" + decimalFormat.format(startValue) + ".00"+"\nSize :"+myorderBean.getSize());
+
+        holder.items.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(mainActivityUser, ProductUpdate.class);
+                intent.putExtra("isServer",true);
+                intent.putExtra("id",myorderBean.getId());
+                mainActivityUser.startActivity(intent);
+            }
+        });
+
     }
 
     public int getItemCount() {

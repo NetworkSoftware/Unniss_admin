@@ -112,16 +112,34 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
                             product.setId(jsonObject.getString("id"));
                             product.setBrand(jsonObject.getString("subcategory"));
                             product.setCategory(jsonObject.getString("category"));
-                            product.setCategoryId(jsonObject.getString("categoryId"));
+                            product.setCategoryId(jsonObject.getString("categoryName"));
                             product.setStock_update(jsonObject.getString("stock_status"));
                             product.setDescription(jsonObject.getString("description"));
+                            product.setFabric(jsonObject.getString("fabric"));
+                            product.setIdeal(jsonObject.getString("ideal"));
+                            product.setOccasion(jsonObject.getString("occasion"));
+                            product.setFit(jsonObject.getString("fit"));
+                            product.setColor(jsonObject.getString("color"));
+                            product.setClosure(jsonObject.getString("closure"));
+                            product.setPocket(jsonObject.getString("pocket"));
+                            product.setPattern(jsonObject.getString("pattern"));
+                            product.setRise(jsonObject.getString("rise"));
+                            product.setOrigin(jsonObject.getString("origin"));
+                            product.setBestselling(jsonObject.getString("bestselling"));
+                            product.setPricedrop(jsonObject.getString("pricedrop"));
                             product.setPrice(jsonObject.getString("price"));
-                            product.setRqtyType(jsonObject.getString("rqtyType"));
-                            if(!jsonObject.isNull("rqty")){
+                            if(!jsonObject.isNull("rqtyType")){
+                                product.setRqtyType(jsonObject.getString("rqtyType"));
+                            }
+                           if(!jsonObject.isNull("rqty")){
                                 product.setRqty(jsonObject.getString("rqty"));
                             }
                             product.setModel(jsonObject.getString("name"));
                             product.setImage(jsonObject.getString("image"));
+                            product.setVariation(jsonObject.getString("variation"));
+                            if(!jsonObject.isNull("variationId")){
+                                product.setVariationId(jsonObject.getString("variationId"));
+                            }
                             contactList.add(product);
                         }
                         mAdapter.notifyData(contactList);
@@ -225,6 +243,7 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
     public void onContactSelected(Product contact) {
         Intent intent = new Intent(MainActivityProduct.this, ProductUpdate.class);
         intent.putExtra("data", contact);
+        intent.putExtra("isServer",false);
         startActivity(intent);
     }
 

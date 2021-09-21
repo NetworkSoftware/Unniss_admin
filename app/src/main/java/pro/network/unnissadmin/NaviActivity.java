@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView;
 
 import pro.network.unnissadmin.banner.MainActivityBanner;
 import pro.network.unnissadmin.categories.MainActivityCategories;
+import pro.network.unnissadmin.coupon.MainActivityCoupon;
 import pro.network.unnissadmin.news.NewsRegister;
 import pro.network.unnissadmin.order.MainActivityOrder;
 import pro.network.unnissadmin.pincode.MainActivityPincode;
@@ -60,6 +61,15 @@ public class NaviActivity extends AppCompatActivity {
 
             }
         });
+        CardView notification = (CardView) findViewById(R.id.notification);
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent io = new Intent(NaviActivity.this, Push_Notification.class);
+                startActivity(io);
+
+            }
+        });
         CardView banner = findViewById(R.id.banner);
         banner.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,11 +79,20 @@ public class NaviActivity extends AppCompatActivity {
 
             }
         });
+        CardView coupon = findViewById(R.id.coupon);
+        coupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent io = new Intent(NaviActivity.this, MainActivityCoupon.class);
+                startActivity(io);
+            }
+        });
+
         CardView order = findViewById(R.id.orders);
         order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navOrderPage("ordered");
+                navOrderPage("processing");
             }
         });
 
@@ -81,14 +100,14 @@ public class NaviActivity extends AppCompatActivity {
         canceled.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navOrderPage("canceled");
+                navOrderPage("cancelled");
             }
         });
         CardView delivered = findViewById(R.id.delivered);
         delivered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navOrderPage("Delivered");
+                navOrderPage("completed");
             }
         });
 

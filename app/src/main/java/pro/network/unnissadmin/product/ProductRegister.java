@@ -1,18 +1,22 @@
 package pro.network.unnissadmin.product;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +32,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -68,13 +77,27 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
 
     public static String[] CATEGORY = new String[]{
     };
+    private final String[] STOCKUPDATE = new String[]{
+            "instock", "outofstock",
+    };
+    private final String[] BESTSELLING = new String[]{
+            "Best Selling",
+    };
+    private final String[] PRICEDROP = new String[]{
+            "Price Drop",
+    };
+    public MaterialButton addSize;
     AddImageAdapter maddImageAdapter;
+    ArrayList<Size> sizes = new ArrayList<>();
+    SizeAdapter sizeAdapter;
     EditText brand;
-    EditText model;
+    EditText model, fabric, ideal, occasion, fit, color, closure, pocket, pattern, rise, origin;
     EditText price;
     EditText ram;
     EditText rom, description;
     MaterialBetterSpinner category;
+    MaterialBetterSpinner bestselling;
+    MaterialBetterSpinner pricedrop;
     MaterialBetterSpinner stock_update;
     String studentId = null;
     Imageutils imageutils;
@@ -82,12 +105,10 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
     CardView itemsAdd;
     EditText rqty;
     TextView submit;
+    private RecyclerView sizelist;
     private RecyclerView imagelist;
     private ArrayList<String> samplesList = new ArrayList<>();
     private ProgressDialog pDialog;
-    private final String[] STOCKUPDATE = new String[]{
-            "instock", "outofstock",
-    };
     private String imageUrl = "";
     private MaterialBetterSpinner rqtyType;
     private Map<String, String> idCatMap = new HashMap<>();
@@ -96,7 +117,59 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stock_register);
+        fabric = findViewById(R.id.fabric);
+        ideal = findViewById(R.id.ideal);
+        occasion = findViewById(R.id.occasion);
+        fit = findViewById(R.id.fit);
+        color = findViewById(R.id.color);
+        closure = findViewById(R.id.closure);
+        pocket = findViewById(R.id.pocket);
+        pattern = findViewById(R.id.pattern);
+        rise = findViewById(R.id.rise);
+        origin = findViewById(R.id.origin);
+        bestselling = findViewById(R.id.bestselling);
+        addSize = findViewById(R.id.addSize);
+        sizelist = findViewById(R.id.sizelist);
+        sizes = new ArrayList<>();
+        addSize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSizeBottom();
+            }
+        });
+        sizeAdapter = new SizeAdapter(this, sizes, new ImageClick() {
+            @Override
+            public void onImageClick(int position) {
 
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+                sizes.remove(position);
+                sizeAdapter.notifyData(sizes);
+            }
+        }, true);
+        final LinearLayoutManager sizeManager = new LinearLayoutManager(
+                this, LinearLayoutManager.HORIZONTAL, false);
+        sizelist.setLayoutManager(sizeManager);
+        sizelist.setAdapter(sizeAdapter);
+        ArrayAdapter<String> sellingAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, BESTSELLING);
+        bestselling.setAdapter(sellingAdapter);
+        bestselling.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            }
+        });
+        pricedrop = findViewById(R.id.pricedrop);
+        ArrayAdapter<String> priceAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, PRICEDROP);
+        pricedrop.setAdapter(priceAdapter);
+        pricedrop.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            }
+        });
         imageutils = new Imageutils(this);
 
         getSupportActionBar().setTitle("Stock Register");
@@ -159,7 +232,6 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
                 android.R.layout.simple_dropdown_item_1line, QTY_TYPE);
         rqtyType.setAdapter(rqtyTypeAdapter);
 
-
         submit = (TextView) findViewById(R.id.submit);
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -172,10 +244,30 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
                     brand.setError("Select the Brand");
                 } else if (model.getText().toString().length() <= 0) {
                     model.setError("Enter the Model");
-                } else if (price.getText().toString().length() <= 0) {
+                }/* else if (price.getText().toString().length() <= 0) {
                     price.setError("Enter the Price");
-                } else if (rqty.getText().toString().length() <= 0) {
-                    rqty.setError("Enter the Quantity");
+                } */else if (rqty.getText().toString().length() <= 0) {
+                    rqty.setError("Enter the Rqty");
+                } else if (fabric.getText().toString().length() <= 0) {
+                    fabric.setError("Enter the Fabric");
+                } else if (ideal.getText().toString().length() <= 0) {
+                    ideal.setError("Enter the Ideal");
+                } else if (occasion.getText().toString().length() <= 0) {
+                    occasion.setError("Enter the Occasion");
+                } else if (fit.getText().toString().length() <= 0) {
+                    fit.setError("Enter the Fit");
+                } else if (color.getText().toString().length() <= 0) {
+                    color.setError("Enter the Color");
+                } else if (closure.getText().toString().length() <= 0) {
+                    closure.setError("Enter the Closure");
+                } else if (pocket.getText().toString().length() <= 0) {
+                    pocket.setError("Enter the Pocket");
+                } else if (pattern.getText().toString().length() <= 0) {
+                    pattern.setError("Enter the Pattern");
+                } else if (rise.getText().toString().length() <= 0) {
+                    rise.setError("Enter the Rise");
+                } else if (origin.getText().toString().length() <= 0) {
+                    origin.setError("Enter the Origin");
                 } else if (stock_update.getText().toString().length() <= 0) {
                     stock_update.setError("Select the Sold or Not");
                 } else if (samplesList.size() <= 0) {
@@ -189,6 +281,54 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
         });
 
         getAllCategories();
+    }
+
+    private void showSizeBottom() {
+        final RoundedBottomSheetDialog mBottomSheetDialog = new RoundedBottomSheetDialog(ProductRegister.this);
+        LayoutInflater inflater = ProductRegister.this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.bottom_size_layout, null);
+
+        final TextInputLayout sizeTxt = dialogView.findViewById(R.id.sizeLayoutTxt);
+        final TextInputEditText size = dialogView.findViewById(R.id.size);
+        final TextInputEditText size_price = dialogView.findViewById(R.id.size_price);
+
+        final Button submit = dialogView.findViewById(R.id.submit);
+        sizeTxt.setVisibility(View.VISIBLE);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (size.getText().toString().length() <= 0) {
+                    Toast.makeText(getApplicationContext(), "Enter Valid Size", Toast.LENGTH_LONG).show();
+                    return;
+                } else if (size_price.getText().toString().length() <= 0) {
+                    Toast.makeText(getApplicationContext(), "Enter Valid Price", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                sizes.add(new Size("", size.getText().toString(), size_price.getText().toString()));
+                sizeAdapter.notifyData(sizes);
+                mBottomSheetDialog.cancel();
+            }
+        });
+        size.requestFocus();
+        size_price.requestFocus();
+
+        mBottomSheetDialog.setContentView(dialogView);
+        mBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        mBottomSheetDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        RoundedBottomSheetDialog d = (RoundedBottomSheetDialog) dialog;
+                        FrameLayout bottomSheet = d.findViewById(R.id.design_bottom_sheet);
+                        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                }, 0);
+            }
+        });
+        mBottomSheetDialog.show();
     }
 
     private void registerUser() {
@@ -228,13 +368,27 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
                 localHashMap.put("category", idCatMap.get(category.getText().toString()));
                 localHashMap.put("subcategory", brand.getText().toString());
                 localHashMap.put("name", model.getText().toString());
-                localHashMap.put("price", price.getText().toString());
+                localHashMap.put("price",sizes.get(0).getSize_price());
                 localHashMap.put("rqty", rqty.getText().toString());
                 localHashMap.put("rqtyType", rqtyType.getText().toString());
-                for(int i=0;i<samplesList.size();i++) {
-                    localHashMap.put("image[]", samplesList.get(i));
+                for (int i = 0; i < samplesList.size(); i++) {
+                    localHashMap.put("image[" + i + "]", samplesList.get(i));
                 }
+
                 localHashMap.put("description", description.getText().toString());
+                localHashMap.put("fabric", fabric.getText().toString());
+                localHashMap.put("ideal", ideal.getText().toString());
+                localHashMap.put("occasion", occasion.getText().toString());
+                localHashMap.put("fit", fit.getText().toString());
+                localHashMap.put("color", color.getText().toString());
+                localHashMap.put("size", new Gson().toJson(sizes));
+                localHashMap.put("closure", closure.getText().toString());
+                localHashMap.put("pocket", pocket.getText().toString());
+                localHashMap.put("pattern", pattern.getText().toString());
+                localHashMap.put("rise", rise.getText().toString());
+                localHashMap.put("origin", origin.getText().toString());
+                localHashMap.put("bestselling", bestselling.getText().toString());
+                localHashMap.put("pricedrop", pricedrop.getText().toString());
                 localHashMap.put("stock_status", stock_update.getText().toString());
 
                 return localHashMap;
@@ -275,7 +429,7 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
                     if (success == 1) {
                         JSONArray jsonArray = jObj.getJSONArray("data");
                         CATEGORY = new String[jsonArray.length()];
-                        idCatMap=new HashMap<>();
+                        idCatMap = new HashMap<>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             CATEGORY[i] = jsonArray.getJSONObject(i).getString("title");
                             idCatMap.put(jsonArray.getJSONObject(i).getString("title"),
@@ -311,11 +465,12 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
 
     @Override
     public void image_attachment(int from, String filename, Bitmap file, Uri uri) {
-        String path = Environment.getExternalStorageDirectory() + File.separator + "ImageAttach" + File.separator;
-        imageutils.createImage(file, filename, path, false);
+        String path = getCacheDir().getPath() + File.separator + "ImageAttach" + File.separator;
+        File storedFile = imageutils.createImage(file, filename, path, false);
         pDialog.setMessage("Uploading...");
         showDialog();
-        new UploadFileToServer().execute(Appconfig.compressImage(imageutils.getPath(uri)));
+        new UploadFileToServer().execute(Appconfig.compressImage(storedFile.getPath(), ProductRegister.this));
+
     }
 
     @Override

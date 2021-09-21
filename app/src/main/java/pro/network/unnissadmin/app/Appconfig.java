@@ -33,9 +33,8 @@ public class Appconfig {
     //Key values
     public static final String shopIdKey = "shopIdKey";
     public static final String mypreference = "mypref";
-    public static final String ip = "http://thestockbazaar.com/prisma/unniss";
-
-//    public static final String ip = "http://192.168.1.101:8113/prisma/unniss";
+    public static final String ip = "http://thestockbazaar.com/prisma/unniss/";
+ // public static final String ip = "http://192.168.1.103:8113/prisma/unniss";
 
     public static final String GET_ALL_ADDRESS = ip + "/get_all_address";
     public static final String FETCH_ADDRESS = ip + "/fetch_address";
@@ -44,6 +43,8 @@ public class Appconfig {
     public static final String PRODUCT_UPDATE = ip + "/update_stock";
     public static final String PRODUCT_GET_ALL = ip + "/dataFetchAll";
     public static final String PRODUCT_DELETE = ip + "/delete_stock";
+    public static final String PRODUCT_GET_ID = ip + "/dataFetch_by_id";
+    public static final String PRODUCT_SIZE = ip + "/get_all_variations";
     //Categories
     public static final String CATEGORIES_CREATE = ip + "/create_category";
     public static final String CATEGORIES_UPDATE = ip + "/update_category";
@@ -60,7 +61,6 @@ public class Appconfig {
     public static final String GET_NEWS = ip + "/get_news";
     //Banner
     public static final String BANNERS_CREATE = ip + "/create_banner";
-    public static final String BANNERS_UPDATE = ip + "/update_stock";
     public static final String BANNERS_GET_ALL = ip + "/dataFetchAll_banner";
     public static final String BANNERS_DELETE = ip + "/delete_banner";
 
@@ -69,15 +69,24 @@ public class Appconfig {
     public static final String ORDER_CHANGE_STATUS = ip + "/order_change_status";
     public static final String UPDATE_WALLET = ip + "/update_wallet";
 
+    //trackingId
+    public static final String UPDATE_TRACKING_ID = ip + "/trackId";
+    //coupon
+    public static final String COUPON = ip + "/create_coupon";
+    public static final String COUPON_UPDATE = ip + "/update_coupon";
+    public static final String COUPON_GET_ALL = ip + "/get_all_coupon";
+
+
     public static final String IMAGE_URL = ip + "/images/";
     public static DecimalFormat decimalFormat = new DecimalFormat("0");
     public static String URL_IMAGE_UPLOAD = ip + "/fileUpload";
     public static String BANNER_CREATE = ip + "/fileFeed";
     public static String BANNER_GET_ALL = ip + "/get_all_feed";
     public static String BANNER_DELETE = ip + "/fileDelete";
+    public static String NOTIFY = ip + "/notify";
     public static Glide locationMap;
     public static String[] QTY_TYPE = new String[]{
-            "Kg", "Nos"
+            "Nos"
     };
     public static Map<String, String[]> stringMap = new HashMap<String, String[]>() {{
         put("Fashion", new String[]{});
@@ -91,13 +100,10 @@ public class Appconfig {
     };
 
     public static String getResizedImage(String path, boolean isResized) {
-        if (isResized) {
-            return IMAGE_URL + "small/" + path.substring(path.lastIndexOf("/") + 1);
-        }
         return path;
     }
 
-    public static String compressImage(String filePath) {
+    public static String compressImage(String filePath, Context context) {
 
         //String filePath = getRealPathFromURI(imageUri, context);
         Bitmap scaledBitmap = null;
@@ -135,6 +141,19 @@ public class Appconfig {
                 actualHeight = (int) maxHeight;
                 actualWidth = (int) maxWidth;
             }
+//            if (imgRatio < maxRatio) {
+//                imgRatio = maxHeight / actualHeight;
+//                actualWidth = (int) (imgRatio * actualWidth);
+//                actualHeight = (int) maxHeight;
+//            } else if (imgRatio > maxRatio) {
+//                imgRatio = maxWidth / actualWidth;
+//                actualHeight = (int) (imgRatio * actualHeight);
+//                actualWidth = (int) maxWidth;
+//            } else {
+//                actualHeight = (int) maxHeight;
+//                actualWidth = (int) maxWidth;
+//
+//            }
         }
 
 //      setting inSampleSize value allows to load a scaled down version of the original image
@@ -201,7 +220,7 @@ public class Appconfig {
         }
 
         FileOutputStream out = null;
-        String filename = getFilename();
+        String filename = getFilename(context);
         try {
             out = new FileOutputStream(filename);
 
@@ -223,8 +242,8 @@ public class Appconfig {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
     }
 
-    public static String getFilename() {
-        File file = new File(Environment.getExternalStorageDirectory().getPath(), "MyFolder/Images");
+    public static String getFilename(Context context) {
+        File file = new File(context.getCacheDir().getPath(), "MyFolder/Images");
         if (!file.exists()) {
             file.mkdirs();
         }
